@@ -152,6 +152,42 @@ section.teeth-bottom{padding-bottom:calc(56px + var(--tooth))}
 .cross::after{top:28%;bottom:44%;left:0;right:0}
 @media (max-width:720px){.games{grid-template-columns:1fr}}
 
+
+/* Archivo: jams y prototipos */
+.archive{margin-top:72px;padding-top:48px;border-top:3px dashed #e3d6d0;display:flex;flex-direction:column;gap:28px}
+.archive-head{display:flex;flex-direction:column;gap:8px;max-width:62ch}
+.archive-head .label{color:var(--red)}
+.archive-head h3{font-size:clamp(1.7rem,3.4vw,2.3rem)}
+.archive-intro{color:var(--ink-muted)}
+.minis{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.mini{min-width:0}
+.mini-link{display:flex;flex-direction:column;height:100%;text-decoration:none;color:inherit;border:2px solid var(--ink);border-radius:12px;overflow:hidden;background:var(--white);box-shadow:4px 4px 0 var(--ink);transition:transform .2s, box-shadow .2s}
+.mini-link:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--red)}
+.mini-art{aspect-ratio:16/10;max-width:100%;display:grid;place-items:center;overflow:hidden;border-bottom:2px solid var(--ink)}
+.mini-art img{width:100%;height:100%;object-fit:cover}
+.mini-art.omr{background:#7cc0e8}
+.mini-art.omr img{width:56%;height:auto;object-fit:contain}
+.mini-art.det img{image-rendering:pixelated;object-position:85% 50%}
+.mini-art.lunes{background:#23263d;display:flex;flex-direction:column;gap:2px}
+.mini-art.lunes .clock{font-family:var(--mono);font-weight:700;font-size:2.2rem;color:#ff5a4f;letter-spacing:.06em;text-shadow:0 0 12px #ff5a4f88}
+.mini-art.lunes .day{font-family:var(--mono);font-size:.7rem;letter-spacing:.3em;color:#ff5a4faa}
+.mini-art.gift{background:repeating-linear-gradient(45deg,#1f5b3a 0 12px,#236a43 12px 24px)}
+.mini-art.gift .box{width:64px;height:54px;background:var(--red);position:relative;border-radius:3px;box-shadow:3px 3px 0 #0003}
+.mini-art.gift .box::before{content:"";position:absolute;left:50%;top:-8px;bottom:0;width:10px;transform:translateX(-50%);background:#f2c14e}
+.mini-art.gift .box::after{content:"";position:absolute;left:-6px;right:-6px;top:-8px;height:14px;background:var(--red-soft);border-radius:3px}
+.mini-txt{padding:14px 16px 18px;display:flex;flex-direction:column;gap:6px;flex:1;min-width:0}
+.mini-txt h4{font-family:var(--display);font-weight:400;font-size:1.3rem;line-height:1.1;margin:0}
+.mini-txt p{color:var(--ink-muted);font-size:.88rem;line-height:1.5;margin:0}
+.mini .kind{font-family:var(--mono);font-weight:700;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--red)}
+.mini-cta{margin-top:auto;padding-top:6px;font-weight:700;font-size:.85rem;color:var(--red)}
+.reto{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;background:var(--bone);border-radius:14px;padding:24px 28px}
+.reto > div{display:flex;flex-direction:column;gap:6px;min-width:0;max-width:64ch}
+.reto .label{color:var(--red)}
+.reto h3{font-size:clamp(1.4rem,2.6vw,1.8rem)}
+.reto p:not(.label){color:var(--ink-muted)}
+@media (max-width:960px){.minis{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.minis{grid-template-columns:1fr}.reto{grid-template-columns:1fr}}
+
 /* Sobre Alberto */
 .about{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:center}
 .avatar{display:block;width:240px;aspect-ratio:1;max-width:100%;height:auto;object-fit:cover;border-radius:50%;border:6px solid var(--white);background:var(--white);box-shadow:8px 8px 0 var(--red-deep);transform:rotate(-3deg)}
@@ -304,6 +340,68 @@ nav{align-items:center}
           </div>
         </article>
       </div>
+
+      <div class="archive">
+        <div class="archive-head">
+          <p class="label" data-i18n="t42">Del cajón</p>
+          <h3 data-i18n="t43">Jams, prototipos y otros juegos</h3>
+          <p class="archive-intro" data-i18n="t44">Antes de los juegos grandes hubo muchos pequeños. Estos se pueden jugar todavía.</p>
+        </div>
+        <div class="minis">
+          <article class="mini">
+            <a class="mini-link" href="https://cosmicworks.itch.io/oh-my-run-forrest" target="_blank" rel="noopener">
+              <div class="mini-art omr"><img src="assets/oh-my-run.png" alt="Icono de Oh My Run!: un corredor con una barba enorme" data-i18n-alt="a3" width="360" height="360" loading="lazy"></div>
+              <div class="mini-txt">
+                <span class="kind" data-i18n="t45">Móvil · Runner</span>
+                <h4>Oh My Run!</h4>
+                <p data-i18n="t46">Runner retro de 8 bits: corre, salta vallas y esquiva vacas mientras te crece la barba.</p>
+                <span class="mini-cta" data-i18n="t53">Jugar en itch.io ↗</span>
+              </div>
+            </a>
+          </article>
+          <article class="mini">
+            <a class="mini-link" href="https://wenyart.itch.io/return-of-the-detectives" target="_blank" rel="noopener">
+              <div class="mini-art det"><img src="assets/detectives.png" alt="Pantalla de título de Return of the Detectives en pixel art" data-i18n-alt="a4" width="768" height="428" loading="lazy"></div>
+              <div class="mini-txt">
+                <span class="kind" data-i18n="t47">2022 · Game jam</span>
+                <h4>Return of the Detectives</h4>
+                <p data-i18n="t48">Investigación por turnos en pixel art, con arte de Wendy Rivero (WenyArts). Hecho para el 5º Reto GameDev.</p>
+                <span class="mini-cta" data-i18n="t53">Jugar en itch.io ↗</span>
+              </div>
+            </a>
+          </article>
+          <article class="mini">
+            <a class="mini-link" href="https://cosmicworks.itch.io/malditos-lunes" target="_blank" rel="noopener">
+              <div class="mini-art lunes" aria-hidden="true"><span class="clock">07:00</span><span class="day">LUN</span></div>
+              <div class="mini-txt">
+                <span class="kind" data-i18n="t49">2023 · En directo</span>
+                <h4>Malditos Lunes</h4>
+                <p data-i18n="t50">Sobrevive a un lunes por la mañana: baño, café, dientes y al trabajo. Hecho en 4 horas en directo.</p>
+                <span class="mini-cta" data-i18n="t53">Jugar en itch.io ↗</span>
+              </div>
+            </a>
+          </article>
+          <article class="mini">
+            <a class="mini-link" href="https://cosmicworks.itch.io/the-gift" target="_blank" rel="noopener">
+              <div class="mini-art gift" aria-hidden="true"><span class="box"></span></div>
+              <div class="mini-txt">
+                <span class="kind" data-i18n="t51">2018 · Game jam</span>
+                <h4>The Gift</h4>
+                <p data-i18n="t52">Un pequeño regalo busca a su dueño. Plataformas navideño hecho para la Gift Jam 2018.</p>
+                <span class="mini-cta" data-i18n="t53">Jugar en itch.io ↗</span>
+              </div>
+            </a>
+          </article>
+        </div>
+        <div class="reto">
+          <div>
+            <p class="label" data-i18n="t54">Comunidad</p>
+            <h3 data-i18n="t55">Organizamos el Reto GameDev</h3>
+            <p data-i18n="t56">Una game jam por equipos para la comunidad gamedev hispanohablante: seis ediciones entre 2020 y 2023, con equipos que se formaban en nuestro Discord.</p>
+          </div>
+          <a class="btn solid-red" href="https://itch.io/jam/5-reto-gamedev" target="_blank" rel="noopener"><span data-i18n="t57">Ver la jam ↗</span></a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -369,6 +467,7 @@ nav{align-items:center}
         <a href="https://www.tiktok.com/@cosmicworkstudios" target="_blank" rel="noopener">TikTok<span>@cosmicworkstudios</span></a>
         <a href="https://www.instagram.com/cosmicworkstudios/" target="_blank" rel="noopener">Instagram<span>@cosmicworkstudios</span></a>
         <a href="https://bsky.app/profile/cosmicworks.bsky.social" target="_blank" rel="noopener">Bluesky<span>@cosmicworks.bsky.social</span></a>
+        <a href="https://cosmicworks.itch.io" target="_blank" rel="noopener">itch.io<span>cosmicworks</span></a>
       </div>
     </div>
   </section>
@@ -377,13 +476,13 @@ nav{align-items:center}
 <footer>
   <div class="wrap">
     <span><img src="assets/cosmic-mark.png" alt=""><span data-i18n="t41">© 2026 Cosmic Works · Ciudad Real, España</span></span>
-    <span class="links"><a href="https://www.youtube.com/@cosmicworks" target="_blank" rel="noopener">YouTube</a><a href="https://x.com/CosmicWork" target="_blank" rel="noopener">Twitter / X</a><a href="https://www.twitch.tv/cosmicworkstudios" target="_blank" rel="noopener">Twitch</a><a href="https://www.tiktok.com/@cosmicworkstudios" target="_blank" rel="noopener">TikTok</a><a href="https://www.instagram.com/cosmicworkstudios/" target="_blank" rel="noopener">Instagram</a><a href="https://bsky.app/profile/cosmicworks.bsky.social" target="_blank" rel="noopener">Bluesky</a></span>
+    <span class="links"><a href="https://www.youtube.com/@cosmicworks" target="_blank" rel="noopener">YouTube</a><a href="https://x.com/CosmicWork" target="_blank" rel="noopener">Twitter / X</a><a href="https://www.twitch.tv/cosmicworkstudios" target="_blank" rel="noopener">Twitch</a><a href="https://www.tiktok.com/@cosmicworkstudios" target="_blank" rel="noopener">TikTok</a><a href="https://www.instagram.com/cosmicworkstudios/" target="_blank" rel="noopener">Instagram</a><a href="https://bsky.app/profile/cosmicworks.bsky.social" target="_blank" rel="noopener">Bluesky</a><a href="https://cosmicworks.itch.io" target="_blank" rel="noopener">itch.io</a></span>
   </div>
 </footer>
 
 <script>
 (function(){
-  var EN={"t0": "Games", "t1": "About", "t2": "Videos", "t3": "Contact", "t4": "I make video games and <span class=\"flip\">show how</span> they’re made.", "t5": "I’m Alberto Blanco, an indie developer from Ciudad Real, Spain. I’ve been playing games my whole life, and now I make the ones I’d love to find: premium, short and fairly priced. No free-to-play, no tricks.", "t6": "See the games", "t7": "Devlog on YouTube ↗", "t8": "Tiki Tiki<br>returns in<br>December", "t9": "Indie development", "t10": "Premium games", "t11": "PC & Steam Deck", "t12": "From Ciudad Real", "t13": "Fresh out of the oven", "t14": "December<br>2026", "t15": "Relaunching on Steam", "t16": "Our tropical memory game is coming back to Steam with a deep overhaul, built to play on the couch with Steam Deck too. Match the totem pairs before time runs out.", "t17": "Platforms", "t18": "Genre", "t19": "Memory / casual puzzle", "t20": "Add to your wishlist", "t21": "In development", "t22": "Dungeon crawler · PC & consoles", "t23": "Our mobile arcade game is reborn as a dungeon crawler: every face of the cube is a dungeon room. Earth, ice, stone and jungle biomes, procedural generation and two-player co-op.", "t24": "Top secret", "t25": "Codename", "t26": "Our most ambitious project yet. We can’t say much more for now; we’ll reveal it bit by bit on the channel.", "t27": "Who’s behind it", "t28": "A one-person studio with a team’s ambition", "t29": "I’m a <strong>software developer</strong> and I’ve been making games for years: prototypes, game jams, mobile games and now PC and Steam Deck titles. Cosmic Works is where all of that turns into games you can buy.", "t30": "I care about <strong>design</strong> as much as code: why a mechanic works, which decision makes a game hook you. Cosmic Works is built on one simple idea: <strong>gaming passion</strong>. I make games because I love playing them, and that should show in every detail, small studio or not.", "t31": "And I share it all on YouTube: news, tips, tutorials and the design decisions behind every game. (Videos are in Spanish.)", "t32": "Game design", "t33": "Game development and design, explained", "t34": "News, tips, tutorials and curiosities about how games are made and the design decisions behind them. Mostly with Unity 6, but not only. Videos are in Spanish.", "t35": "Watch the channel ↗", "t36": "Let’s talk", "t37": "Get in touch", "t38": "Press, content creators, publishers or any kind of collaboration. Want a key, the press kit or a look at a build of what we’re making? We’d love to hear from you.", "t39": "Copy email", "t41": "© 2026 Cosmic Works · Ciudad Real, Spain", "a0": "Cosmic Works logo: a skull-shaped mug", "a1": "Tiki Tiki: The Tropical Memory Game cover art, with tiki totems on a beach", "a2": "Illustration of Alberto Blanco, arms crossed, wearing a Cosmic Works logo t-shirt"};
+  var EN={"t0": "Games", "t1": "About", "t2": "Videos", "t3": "Contact", "t4": "I make video games and <span class=\"flip\">show how</span> they’re made.", "t5": "I’m Alberto Blanco, an indie developer from Ciudad Real, Spain. I’ve been playing games my whole life, and now I make the ones I’d love to find: premium, short and fairly priced. No free-to-play, no tricks.", "t6": "See the games", "t7": "Devlog on YouTube ↗", "t8": "Tiki Tiki<br>returns in<br>December", "t9": "Indie development", "t10": "Premium games", "t11": "PC & Steam Deck", "t12": "From Ciudad Real", "t13": "Fresh out of the oven", "t14": "December<br>2026", "t15": "Relaunching on Steam", "t16": "Our tropical memory game is coming back to Steam with a deep overhaul, built to play on the couch with Steam Deck too. Match the totem pairs before time runs out.", "t17": "Platforms", "t18": "Genre", "t19": "Memory / casual puzzle", "t20": "Add to your wishlist", "t21": "In development", "t22": "Dungeon crawler · PC & consoles", "t23": "Our mobile arcade game is reborn as a dungeon crawler: every face of the cube is a dungeon room. Earth, ice, stone and jungle biomes, procedural generation and two-player co-op.", "t24": "Top secret", "t25": "Codename", "t26": "Our most ambitious project yet. We can’t say much more for now; we’ll reveal it bit by bit on the channel.", "t27": "Who’s behind it", "t28": "A one-person studio with a team’s ambition", "t29": "I’m a <strong>software developer</strong> and I’ve been making games for years: prototypes, game jams, mobile games and now PC and Steam Deck titles. Cosmic Works is where all of that turns into games you can buy.", "t30": "I care about <strong>design</strong> as much as code: why a mechanic works, which decision makes a game hook you. Cosmic Works is built on one simple idea: <strong>gaming passion</strong>. I make games because I love playing them, and that should show in every detail, small studio or not.", "t31": "And I share it all on YouTube: news, tips, tutorials and the design decisions behind every game. (Videos are in Spanish.)", "t32": "Game design", "t33": "Game development and design, explained", "t34": "News, tips, tutorials and curiosities about how games are made and the design decisions behind them. Mostly with Unity 6, but not only. Videos are in Spanish.", "t35": "Watch the channel ↗", "t36": "Let’s talk", "t37": "Get in touch", "t38": "Press, content creators, publishers or any kind of collaboration. Want a key, the press kit or a look at a build of what we’re making? We’d love to hear from you.", "t39": "Copy email", "t41": "© 2026 Cosmic Works · Ciudad Real, Spain", "a0": "Cosmic Works logo: a skull-shaped mug", "a1": "Tiki Tiki: The Tropical Memory Game cover art, with tiki totems on a beach", "a2": "Illustration of Alberto Blanco, arms crossed, wearing a Cosmic Works logo t-shirt", "t42": "From the drawer", "t43": "Jams, prototypes and other games", "t44": "Before the big games there were lots of small ones. You can still play these.", "t45": "Mobile · Runner", "t46": "A retro 8-bit runner: run, jump fences and dodge cows while your beard keeps growing.", "t47": "2022 · Game jam", "t48": "A turn-based pixel art investigation game, with art by Wendy Rivero (WenyArts). Made for the 5th Reto GameDev.", "t49": "2023 · Live", "t50": "Survive a Monday morning: bathroom, coffee, teeth and off to work. Made in 4 hours, live on stream.", "t51": "2018 · Game jam", "t52": "A little gift searches for its owner. A Christmas platformer made for Gift Jam 2018.", "t53": "Play on itch.io ↗", "t54": "Community", "t55": "We run the Reto GameDev", "t56": "A team-based game jam for the Spanish-speaking game dev community: six editions between 2020 and 2023, with teams forming on our Discord.", "t57": "See the jam ↗", "a3": "Oh My Run! icon: a runner with a huge beard", "a4": "Return of the Detectives pixel art title screen"};
   var ES={}, ESalt={};
   var nodes=document.querySelectorAll('[data-i18n]'), alts=document.querySelectorAll('[data-i18n-alt]');
   nodes.forEach(function(n){ES[n.getAttribute('data-i18n')]=n.innerHTML;});
