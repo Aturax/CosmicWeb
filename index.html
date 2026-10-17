@@ -102,6 +102,10 @@ section{padding-block:80px}
 .band-red .sec-head .label{color:#ffd9d6}
 .sec-head .mark{width:44px;height:auto}
 
+/* Secciones con borde dentado: el diente se suma al espacio normal */
+section.teeth-top{padding-top:calc(88px + var(--tooth))}
+section.teeth-bottom{padding-bottom:calc(88px + var(--tooth))}
+
 /* Juego destacado */
 .feature{display:grid;grid-template-columns:1.3fr 1fr;gap:44px;align-items:center}
 .shot{position:relative;margin:0}
