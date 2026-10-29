@@ -8,3 +8,5 @@
 - Fuente del logo: IM FELL English (Google Fonts: "IM Fell English"). Titulares: IM Fell English (misma fuente que el logo); texto: Work Sans; etiquetas: JetBrains Mono.
 - No mencionar IA ni ExpoGo en la web. Zampa Cubes: solo la versión original de móvil (no anunciar todavía el relanzamiento). Tales of Cotteland se muestra solo como "Project Sargon" (sin revelar detalles).
 - Imágenes en `assets/`. `og-image.png` es la vista previa al compartir el enlace.
+- Press kit de Tiki Tiki en `presskit/tiki-tiki/` (copia de `ArtSource/Marketing/presskit.html` del repo Aturax/Tiki-Tiki, con las rutas como en su `make_presskit.sh`; sin los huecos por rellenar). Si cambia el original, regenerarlo. Incluye `TikiTiki_PressKit.zip` para descarga.
+- Al tocar el objeto `EN` con scripts, volver a buscarlo después de modificar el HTML (no reutilizar posiciones antiguas) y comprobar con `node --check` que el script sigue siendo válido.

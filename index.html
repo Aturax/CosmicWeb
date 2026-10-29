@@ -86,6 +86,8 @@ nav a:hover{background-size:100% 2px;color:var(--red-deep)}
 .btn.solid-red{background:var(--red);color:var(--white);border-color:var(--red);box-shadow:4px 4px 0 var(--ink)}
 .btn.solid-red:hover{box-shadow:6px 6px 0 var(--ink)}
 .btn.ghost{color:var(--white)}
+.btn.outline-red{color:var(--red);border-color:var(--red);background:var(--white)}
+.btn.outline-red:hover{box-shadow:4px 4px 0 var(--red)}
 
 /* Cinta */
 .ticker{background:var(--ink);color:var(--white);overflow:hidden;border-block:3px solid var(--ink);margin-top:calc(var(--tooth) * -1);padding-top:var(--tooth)}
@@ -218,6 +220,7 @@ section.teeth-bottom{padding-bottom:calc(56px + var(--tooth))}
 .contact .box-txt{display:flex;flex-direction:column;gap:10px;min-width:0;max-width:60ch}
 .contact .box h3{font-size:clamp(1.6rem,3vw,2rem);color:var(--red)}
 .contact .box p{color:var(--ink-muted)}
+.contact .box p a{color:var(--red);font-weight:600}
 .box-mail{display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-width:0}
 .contact .mail{font-family:var(--mono);font-weight:700;font-size:clamp(1rem,2.2vw,1.3rem);color:var(--red);text-decoration:none;word-break:break-all;border-bottom:2px solid currentColor}
 .contact .mail:hover{color:var(--red-deep)}
@@ -265,6 +268,7 @@ nav{align-items:center}
       <a href="#alberto" data-i18n="t1">Sobre mí</a>
       <a href="#videos" data-i18n="t2">Vídeos</a>
       <a href="#contacto" data-i18n="t3">Contacto</a>
+      <button class="lang" id="lang-toggle" type="button" aria-label="Switch to English">EN</button>
     </nav>
   </div>
 </header>
@@ -324,6 +328,7 @@ nav{align-items:center}
           </dl>
           <div class="btns">
             <a class="btn solid-red" href="https://store.steampowered.com/app/1300950/" target="_blank" rel="noopener" data-i18n="t20">Añadir a la lista de deseos</a>
+            <a class="btn outline-red" href="/presskit/tiki-tiki/" data-i18n="pk">Press kit</a>
           </div>
         </div>
       </article>
@@ -459,7 +464,7 @@ nav{align-items:center}
         <div class="box">
           <div class="box-txt">
             <h3 data-i18n="t37">Escríbeme</h3>
-            <p data-i18n="t38">Si quieres una clave para hablar de un juego, el press kit o ver en qué estoy trabajando, escribe a este correo. Lo leo yo.</p>
+            <p data-i18n="t38">Si quieres una clave para hablar de un juego, el <a href="/presskit/tiki-tiki/">press kit</a> o ver en qué estoy trabajando, escribe a este correo. Lo leo yo.</p>
           </div>
           <div class="box-mail">
             <a class="mail" href="mailto:contact@cosmicworks.es">contact@cosmicworks.es</a>
@@ -489,7 +494,16 @@ nav{align-items:center}
 
 <script>
 (function(){
-  var EN={"t0": "Games", "t1": "About", "t2": "Videos", "t3": "Contact", "t4": "I make video games and <span class=\"flip\">show how</span> they’re made.", "t5": "I’m Alberto Blanco, an indie developer from Ciudad Real, Spain. I’ve been playing games my whole life, and now I make the ones I’d love to find: premium, short and fairly priced. No free-to-play, no tricks.", "t6": "See the games", "t7": "Devlog on YouTube ↗", "t8": "Tiki Tiki<br>returns in<br>December", "t9": "Indie development", "t10": "Premium games", "t11": "PC & Steam Deck", "t12": "From Ciudad Real", "t13": "Fresh out o{"t0": "Games", "t1": "About", "t2": "Videos", "t3": "Contact", "t4": "I make video games and <span class=\"flip\">show how</span> they're made.", "t5": "I'm Alberto Blanco, an indie developer from Ciudad Real, Spain. I make short games for PC and Steam Deck, the kind you buy once and that's it.", "t6": "See the games", "t7": "Devlog on YouTube ↗", "t8": "Tiki Tiki<br>returns in<br>December", "t9": "Indie dev", "t10": "Gaming passion", "t11": "PC and Steam Deck", "t12": "Made in Ciudad Real", "t13": "My games", "t14": "December<br>2026", "t15": "Relaunching on Steam", "t16": "The 2020 memory game is coming back to Steam with a lot of changes and Steam Deck support. Find the matching totems before time runs out.", "t17": "Platforms", "t18": "Genre", "t19": "Memory / casual puzzle", "t20": "Add to your wishlist", "t21": "iOS & Android", "t22": "Arcade · Puzzle", "t23": "Swipe to move the white ball, collect the blue cubes on every face and dodge the black balls. Reach the edge and you jump to another face of the cube. Each level is faster than the last.", "t24": "Top secret", "t25": "Codename", "t26": "It's the biggest game I've made. I can't say more yet; I'll show it on the channel bit by bit.", "t27": "Who's behind it", "t28": "Hi, I'm Alberto", "t29": "I'm a programmer and I've been making games for years. I started with mobile games and game jams, and now I make games for PC and Steam Deck.", "t30": "I care about design as much as code, especially figuring out why one mechanic works and another doesn't. The studio's motto is \"gaming passion\": I play a lot, and that's where most of my ideas come from.", "t31": "On YouTube I show how I make my games. (Videos are in Spanish.)", "t32": "Game design", "t33": "My YouTube channel", "t34": "Videos about how games are made: news, tutorials and the design decisions behind them. Mostly with Unity, but not only. Videos are in Spanish.", "t35": "Watch the channel ↗", "t36": "Let's talk", "t37": "Write to me", "t38": "If you'd like a key to cover a game, the press kit, or a look at what I'm working on, write to this address. I read it myself.", "t39": "Copy email", "t41": "© 2026 Cosmic Works · Ciudad Real, Spain", "a0": "Cosmic Works logo: a skull-shaped mug", "a1": "Tiki Tiki: The Tropical Memory Game cover art, with tiki totems on a beach", "a2": "Illustration of Alberto Blanco, arms crossed, wearing a Cosmic Works logo t-shirt", "t42": "From the drawer", "t43": "Jams, prototypes and other games", "t44": "Games from jams, live streams and a few experiments over the years. You can play them on itch.io.", "t45": "Mobile · Runner", "t46": "A retro 8-bit runner: run, jump fences and dodge cows while your beard keeps growing.", "t47": "2022 · Game jam", "t48": "A turn-based pixel art investigation game, with art by Wendy Rivero (WenyArts). Made for the 5th Reto GameDev.", "t49": "2023 · Live", "t50": "Survive a Monday morning: bathroom, coffee, teeth and off to work. Made in 4 hours, live on stream.", "t51": "2018 · Game jam", "t52": "A little gift searches for its owner. A Christmas platformer made for Gift Jam 2018.", "t53": "Play on itch.io ↗", "t54": "Community", "t55": "The Reto GameDev", "t56": "A team game jam we ran for the Spanish-speaking game dev community. There were six editions, from 2020 to 2023.", "t57": "See the jam ↗", "a3": "Oh My Run! icon: a runner with a huge beard", "a4": "Return of the Detectives pixel art title screen", "azc": "Zampa Cubes logo next to the cube icon", "zc-link": "See it on itch.io ↗", "asg": "A case file stamped TOP SECRET over a redacted Project Sargon document"}ntElement.lang=lang;
+  var EN={"t0": "Games", "t1": "About", "t2": "Videos", "t3": "Contact", "t4": "I make video games and <span class=\"flip\">show how</span> they're made.", "t5": "I'm Alberto Blanco, an indie developer from Ciudad Real, Spain. I make short games for PC and Steam Deck, the kind you buy once and that's it.", "t6": "See the games", "t7": "Devlog on YouTube ↗", "t8": "Tiki Tiki<br>returns in<br>December", "t9": "Indie dev", "t10": "Gaming passion", "t11": "PC and Steam Deck", "t12": "Made in Ciudad Real", "t13": "My games", "t14": "December<br>2026", "t15": "Relaunching on Steam", "t16": "The 2020 memory game is coming back to Steam with a lot of changes and Steam Deck support. Find the matching totems before time runs out.", "t17": "Platforms", "t18": "Genre", "t19": "Memory / casual puzzle", "t20": "Add to your wishlist", "t21": "iOS & Android", "t22": "Arcade · Puzzle", "t23": "Swipe to move the white ball, collect the blue cubes on every face and dodge the black balls. Reach the edge and you jump to another face of the cube. Each level is faster than the last.", "t24": "Top secret", "t25": "Codename", "t26": "It's the biggest game I've made. I can't say more yet; I'll show it on the channel bit by bit.", "t27": "Who's behind it", "t28": "Hi, I'm Alberto", "t29": "I'm a programmer and I've been making games for years. I started with mobile games and game jams, and now I make games for PC and Steam Deck.", "t30": "I care about design as much as code, especially figuring out why one mechanic works and another doesn't. The studio's motto is \"gaming passion\": I play a lot, and that's where most of my ideas come from.", "t31": "On YouTube I show how I make my games. (Videos are in Spanish.)", "t32": "Game design", "t33": "My YouTube channel", "t34": "Videos about how games are made: news, tutorials and the design decisions behind them. Mostly with Unity, but not only. Videos are in Spanish.", "t35": "Watch the channel ↗", "t36": "Let's talk", "t37": "Write to me", "t38": "If you'd like a key to cover a game, the <a href=\"/presskit/tiki-tiki/\">press kit</a>, or a look at what I'm working on, write to this address. I read it myself.", "t39": "Copy email", "t41": "© 2026 Cosmic Works · Ciudad Real, Spain", "a0": "Cosmic Works logo: a skull-shaped mug", "a1": "Tiki Tiki: The Tropical Memory Game cover art, with tiki totems on a beach", "a2": "Illustration of Alberto Blanco, arms crossed, wearing a Cosmic Works logo t-shirt", "t42": "From the drawer", "t43": "Jams, prototypes and other games", "t44": "Games from jams, live streams and a few experiments over the years. You can play them on itch.io.", "t45": "Mobile · Runner", "t46": "A retro 8-bit runner: run, jump fences and dodge cows while your beard keeps growing.", "t47": "2022 · Game jam", "t48": "A turn-based pixel art investigation game, with art by Wendy Rivero (WenyArts). Made for the 5th Reto GameDev.", "t49": "2023 · Live", "t50": "Survive a Monday morning: bathroom, coffee, teeth and off to work. Made in 4 hours, live on stream.", "t51": "2018 · Game jam", "t52": "A little gift searches for its owner. A Christmas platformer made for Gift Jam 2018.", "t53": "Play on itch.io ↗", "t54": "Community", "t55": "The Reto GameDev", "t56": "A team game jam we ran for the Spanish-speaking game dev community. There were six editions, from 2020 to 2023.", "t57": "See the jam ↗", "a3": "Oh My Run! icon: a runner with a huge beard", "a4": "Return of the Detectives pixel art title screen", "azc": "Zampa Cubes logo next to the cube icon", "zc-link": "See it on itch.io ↗", "asg": "A case file stamped TOP SECRET over a redacted Project Sargon document", "pk": "Press kit"};
+  var ES={}, ESalt={};
+  var nodes=document.querySelectorAll('[data-i18n]'), alts=document.querySelectorAll('[data-i18n-alt]');
+  nodes.forEach(function(n){ES[n.getAttribute('data-i18n')]=n.innerHTML;});
+  alts.forEach(function(n){ESalt[n.getAttribute('data-i18n-alt')]=n.alt;});
+  var btn=document.getElementById('lang-toggle');
+  function apply(lang){
+    nodes.forEach(function(n){var k=n.getAttribute('data-i18n');n.innerHTML=lang==='en'?EN[k]:ES[k];});
+    alts.forEach(function(n){var k=n.getAttribute('data-i18n-alt');n.alt=lang==='en'?EN[k]:ESalt[k];});
+    document.documentElement.lang=lang;
     btn.textContent=lang==='en'?'ES':'EN';
     btn.setAttribute('aria-label',lang==='en'?'Cambiar a español':'Switch to English');
     current=lang;
