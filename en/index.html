@@ -10,17 +10,6 @@
 <meta name="author" content="Alberto Blanco">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#a51e1e">
-<script>
-/* Idioma: / es español y /en/ inglés. Si el visitante eligió otro idioma con el botón (cw-lang) o, sin elección, su navegador no está en español, se le lleva a la otra versión. Los buscadores no se redirigen: cada uno indexa su URL. */
-(function(){
-  if(navigator.webdriver||/bot|crawl|spider|slurp|google|bing|yandex|baidu|duckduck|lighthouse|headless|inspection|facebookexternalhit|embedly|whatsapp|telegram|discord|preview/i.test(navigator.userAgent))return;
-  var here=document.documentElement.lang, saved=null;
-  try{saved=localStorage.getItem('cw-lang');}catch(e){}
-  var nav=(navigator.languages&&navigator.languages[0])||navigator.language||'es';
-  var want=saved||(/^es\b/i.test(nav)?'es':'en');
-  if(want!==here&&(want==='es'||want==='en'))location.replace((want==='en'?'/en/':'/')+location.hash);
-})();
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -211,6 +200,8 @@ section.teeth-bottom{padding-bottom:calc(56px + var(--tooth))}
 
 .game-link{margin-top:4px;font-weight:700;font-size:.92rem;color:var(--red);text-decoration:none}
 .game-link:hover{text-decoration:underline}
+.title-link{text-decoration:none}
+.title-link:hover{text-decoration:underline;text-decoration-thickness:2px}
 
 /* Sobre Alberto */
 .about{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:center}
@@ -291,6 +282,18 @@ nav a.lang:hover{background:var(--red);color:var(--white)}
 <link rel="alternate" hreflang="es" href="https://cosmicworks.es/">
 <link rel="alternate" hreflang="en" href="https://cosmicworks.es/en/">
 <link rel="alternate" hreflang="x-default" href="https://cosmicworks.es/">
+<script>
+/* Idioma: cada página española tiene su versión inglesa (y al revés), enlazadas con los <link hreflang> de arriba. Si el visitante eligió otro idioma con el botón (cw-lang) o, sin elección, su navegador no está en español, se le lleva a la otra versión. Los buscadores y las herramientas automáticas no se redirigen: cada uno indexa su URL. */
+(function(){
+  if(navigator.webdriver||/bot|crawl|spider|slurp|google|bing|yandex|baidu|duckduck|lighthouse|headless|inspection|facebookexternalhit|embedly|whatsapp|telegram|discord|preview/i.test(navigator.userAgent))return;
+  var here=document.documentElement.lang, saved=null;
+  try{saved=localStorage.getItem('cw-lang');}catch(e){}
+  var nav=(navigator.languages&&navigator.languages[0])||navigator.language||'es';
+  var want=saved||(/^es\b/i.test(nav)?'es':'en');
+  var alt=document.querySelector('link[rel="alternate"][hreflang="'+want+'"]');
+  if(want!==here&&alt)location.replace(alt.getAttribute('href')+location.hash);
+})();
+</script>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Cosmic Works">
 <meta property="og:locale" content="en_US" data-i18n-content="loc">
@@ -390,7 +393,7 @@ nav a.lang:hover{background:var(--red);color:var(--white)}
    "name": "Cosmic Works",
    "url": "https://cosmicworks.es/",
    "inLanguage": [
-    "en",
+    "es",
     "en"
    ],
    "publisher": {
@@ -434,6 +437,7 @@ nav a.lang:hover{background:var(--red);color:var(--white)}
     "@id": "https://cosmicworks.es/#org"
    },
    "sameAs": [
+    "https://cosmicworks.es/en/games/tiki-tiki/",
     "https://cosmicworks.es/presskit/tiki-tiki/"
    ]
   },
@@ -553,7 +557,7 @@ nav a.lang:hover{background:var(--red);color:var(--white)}
         </figure>
         <div class="body">
           <p class="label" data-i18n="t15">Relaunching on Steam</p>
-          <h3>Tiki Tiki: The Tropical Memory Game</h3>
+          <h3><a class="title-link" href="/en/games/tiki-tiki/" data-i18n-href="tthref">Tiki Tiki: The Tropical Memory Game</a></h3>
           <p class="desc" data-i18n="t16">The 2020 memory game is coming back to Steam with a lot of changes and Steam Deck support. Find the matching totems before time runs out.</p>
           <dl class="facts">
             <dt data-i18n="t17">Platforms</dt><dd>Windows, macOS, Linux · Steam Deck</dd>
@@ -563,6 +567,7 @@ nav a.lang:hover{background:var(--red);color:var(--white)}
             <a class="btn solid-red" href="https://store.steampowered.com/app/1300950/" target="_blank" rel="noopener" data-i18n="t20">Add to your wishlist</a>
             <a class="btn outline-red" href="/presskit/tiki-tiki/" data-i18n="pk">Press kit</a>
           </div>
+          <a class="game-link" href="/en/games/tiki-tiki/" data-i18n-href="tthref" data-i18n="ttmore">More about the game →</a>
         </div>
       </article>
 
