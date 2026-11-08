@@ -240,6 +240,14 @@ section.teeth-bottom{padding-bottom:calc(56px + var(--tooth))}
 .faq details p{margin-top:10px;color:var(--ink-muted);max-width:68ch}
 .faq details p a{color:var(--red);font-weight:600}
 
+.articles{margin-bottom:36px;max-width:780px}
+.articles h3{font-size:clamp(1.6rem,3vw,2.1rem);color:var(--red);margin-bottom:10px}
+.articles ul{list-style:none;margin:0;padding:0}
+.articles li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;padding:12px 0;border-bottom:2px solid var(--bone)}
+.articles a{font-weight:600;color:var(--ink);text-decoration-color:var(--red)}
+.articles a:hover{color:var(--red)}
+.articles span{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-muted)}
+
 /* Contacto */
 .contact .box{background:var(--white);color:var(--ink);border-radius:16px;padding:32px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;box-shadow:8px 8px 0 var(--red-deep)}
 .contact .box-txt{display:flex;flex-direction:column;gap:10px;min-width:0;max-width:60ch}
@@ -713,6 +721,12 @@ nav a.lang:hover{background:var(--red);color:var(--white)}
           <h3 data-i18n="l9">Game design</h3>
           <p data-i18n="l10">Games I like and what I take from them for mine.</p>
         </div>
+      </div>
+      <div class="articles">
+        <h3 data-i18n="ar0">Articles</h3>
+        <ul>
+          <li><a href="/aprende/service-locator-unity/" data-i18n="ar1">Service locator in Unity: how I organise my game's systems (in Spanish)</a><span data-i18n="ar2">Unity · C# · Architecture</span></li>
+        </ul>
       </div>
       <div class="yt" id="videos">
         <div class="play" aria-hidden="true"></div>
