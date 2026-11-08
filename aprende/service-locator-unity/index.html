@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Service locator en Unity: cómo organizar los sistemas de tu juego | Cosmic Works</title>
-<meta name="description" content="Qué es un service locator, cómo lo he montado en Unity para Project Sargon y qué problemas me ha evitado. Con código en C# y el vídeo del devlog.">
+<meta name="description" content="Cómo he montado un service locator en Unity para conectar los sistemas de Project Sargon. Con código en C# y el vídeo del devlog.">
 <meta name="author" content="Alberto Blanco">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#a51e1e">
@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="Cosmic Works">
 <meta property="og:locale" content="es_ES">
 <meta property="og:title" content="Service locator en Unity: cómo organizo los sistemas de mi juego">
-<meta property="og:description" content="Qué es un service locator, cómo lo he montado en Unity para Project Sargon y qué problemas me ha evitado. Con código en C# y el vídeo del devlog.">
+<meta property="og:description" content="Cómo he montado un service locator en Unity para conectar los sistemas de Project Sargon. Con código en C# y el vídeo del devlog.">
 <meta property="og:url" content="https://cosmicworks.es/aprende/service-locator-unity/">
 <meta property="og:image" content="https://i.ytimg.com/vi/AS8B0SSKWb0/maxresdefault.jpg">
 <meta property="article:published_time" content="2026-11-09">
@@ -23,7 +23,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@CosmicWork">
 <meta name="twitter:title" content="Service locator en Unity: cómo organizo los sistemas de mi juego">
-<meta name="twitter:description" content="Qué es un service locator, cómo lo he montado en Unity para Project Sargon y qué problemas me ha evitado. Con código en C# y el vídeo del devlog.">
+<meta name="twitter:description" content="Cómo he montado un service locator en Unity para conectar los sistemas de Project Sargon. Con código en C# y el vídeo del devlog.">
 <meta name="twitter:image" content="https://i.ytimg.com/vi/AS8B0SSKWb0/maxresdefault.jpg">
 <script type="application/ld+json">
 {
@@ -33,7 +33,7 @@
    "@type": "TechArticle",
    "@id": "https://cosmicworks.es/aprende/service-locator-unity/#article",
    "headline": "Service locator en Unity: cómo organizo los sistemas de mi juego",
-   "description": "Qué es un service locator, cómo lo he montado en Unity para Project Sargon y qué problemas me ha evitado. Con código en C# y el vídeo del devlog.",
+   "description": "Cómo he montado un service locator en Unity para conectar los sistemas de Project Sargon. Con código en C# y el vídeo del devlog.",
    "inLanguage": "es",
    "datePublished": "2026-11-09",
    "dateModified": "2026-11-09",
@@ -64,7 +64,7 @@
    "@type": "VideoObject",
    "@id": "https://cosmicworks.es/aprende/service-locator-unity/#video",
    "name": "El paso más importante (y difícil) en el desarrollo de mi juego",
-   "description": "Devlog de Project Sargon: por qué llevo meses sin enseñar nada, cómo es el core framework del juego con un service locator, y cómo serán los niveles y la ambientación.",
+   "description": "Devlog de Project Sargon sobre el core framework del juego, montado con un service locator.",
    "uploadDate": "2026-05-21",
    "inLanguage": "es",
    "thumbnailUrl": [
@@ -275,7 +275,7 @@ footer a:hover{color:var(--white)}
       <p class="crumbs"><a href="/">Cosmic Works</a> / <a href="/#aprende">Aprende</a> / Service locator</p>
       <p class="label">Unity · C# · Arquitectura</p>
       <h1>Service locator en Unity: cómo organizo los sistemas de mi juego</h1>
-      <p class="lead">Pasé meses sin enseñar nada de Project Sargon porque estaba montando la base del juego, un core framework en el que todos los sistemas se conectan a través de un service locator. Aquí cuento cómo lo he hecho en Unity y por qué.</p>
+      <p class="lead">Pasé meses sin enseñar nada de Project Sargon porque estaba montando la base del juego. Es un core framework en el que los sistemas se conectan a través de un service locator. Aquí cuento cómo lo he hecho en Unity.</p>
       <p class="meta">Alberto Blanco · <time datetime="2026-11-09">9 de noviembre de 2026</time></p>
     </div>
   </div>
@@ -291,11 +291,11 @@ footer a:hover{color:var(--white)}
       </div>
 
       <h2>El problema</h2>
-      <p>Un juego tiene sistemas que casi todo lo demás necesita: el input, el audio, el guardado de partidas, la carga de escenas o la interfaz. Una puerta quiere sonar al abrirse, un menú quiere guardar las opciones, el personaje quiere saber qué botón has pulsado.</p>
+      <p>En un juego hay sistemas que usa casi todo lo demás, como el input, el audio o el guardado de partidas. Una puerta tiene que sonar al abrirse y el menú de opciones tiene que guardar lo que cambias.</p>
       <p>Si cada script busca esos sistemas por su cuenta, con <code>FindObjectOfType</code> o con un singleton distinto en cada clase, el proyecto se llena de referencias cruzadas. Al principio funciona. Luego cada mecánica nueva cuesta un poco más que la anterior, y un cambio en el audio rompe algo en el menú de pausa.</p>
 
       <h2>Qué es un service locator</h2>
-      <p>Es un registro central. Cada sistema se registra una vez al arrancar el juego, y cualquier script lo pide por su tipo. El que pide no sabe quién creó el servicio ni dónde vive. Solo sabe que existe.</p>
+      <p>Es un registro central. Cada sistema se registra una vez al arrancar el juego, y cualquier script lo pide por su tipo. El script que lo pide no necesita saber quién lo creó ni en qué objeto está.</p>
       <p>La versión mínima es un diccionario que va de un tipo a una instancia:</p>
       <pre><code>using System;
 using System.Collections.Generic;
@@ -383,7 +383,7 @@ public class Bootstrapper : MonoBehaviour
         // ...
     }
 }</code></pre>
-      <p>La puerta no tiene una referencia al <code>AudioService</code> en el inspector ni lo busca en la escena. Si mañana cambio cómo funciona el audio por dentro, la puerta no se entera.</p>
+      <p>La puerta no tiene una referencia al <code>AudioService</code> en el inspector ni lo busca en la escena. Si cambio cómo funciona el audio por dentro, la puerta no hay que tocarla.</p>
 
       <h2>Detalles que me han ahorrado problemas</h2>
       <ul>
@@ -401,11 +401,11 @@ private static void ResetStatics()
       </ul>
 
       <h2>Inconvenientes</h2>
-      <p>El service locator tiene mala fama en algunos sitios, y no sin motivo. Las dependencias quedan escondidas: mirando la clase <code>Door</code> desde fuera no sabes que necesita el audio. Y si te olvidas de registrar algo, te enteras al ejecutar, no al compilar.</p>
+      <p>El service locator tiene mala fama en algunos sitios. Las dependencias quedan escondidas, porque mirando la clase <code>Door</code> desde fuera no sabes que usa el audio. Y si te olvidas de registrar un servicio, el error salta al ejecutar el juego y no al compilar.</p>
       <p>La alternativa más habitual es la inyección de dependencias, con librerías como VContainer o Zenject. Para un juego que hago yo solo, me compensa la sencillez del service locator. Para que no se convierta en un cajón de sastre, solo registro sistemas que de verdad son globales. Lo que pertenece a un nivel o a un enemigo se queda en su sitio.</p>
 
       <h2>Por qué no se ve nada</h2>
-      <p>Nada de esto aparece en pantalla, y por eso pasé meses sin nada que enseñar de <a href="/juegos/project-sargon/">Project Sargon</a>. Ahora cada sistema nuevo se engancha a lo que ya hay sin tocar lo demás, y lo próximo que enseñe ya se va a parecer a un juego.</p>
+      <p>Nada de esto aparece en pantalla, y por eso pasé meses sin nada que enseñar de <a href="/juegos/project-sargon/">Project Sargon</a>. Con esta base terminada, ya puedo ponerme con lo que sí se ve.</p>
       <p class="note">Si tienes dudas o lo haces de otra forma, cuéntamelo en los comentarios del <a href="https://youtu.be/AS8B0SSKWb0" target="_blank" rel="noopener">vídeo</a> o en <a href="mailto:contact@cosmicworks.es">contact@cosmicworks.es</a>.</p>
     </article>
   </section>
