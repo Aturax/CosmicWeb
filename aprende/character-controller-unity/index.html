@@ -298,14 +298,39 @@ footer a:hover{color:var(--white)}
       <h2>Dos formas de empezar</h2>
       <p>Para la parte física hay dos caminos. Uno es usar un <code>Rigidbody</code> con un collider y programar a mano el comportamiento. Tienes fuerzas, empujones y todo el motor de físicas a tu favor, pero también tienes que pelearte con la fricción, las rampas y los rebotes que no quieres.</p>
       <p>El otro es partir del componente <code>CharacterController</code>. No reacciona a fuerzas, pero resuelve bien las rampas y los escalones, y el movimiento hace exactamente lo que le pides. A cambio, la gravedad y cualquier empuje los calculas tú.</p>
-      <p>En los ejemplos uso el componente porque el código queda más corto. La separación que explico después vale igual con un <code>Rigidbody</code>.</p>
+      <p>En el prototipo del que salió Project Sargon usé el componente, y en los ejemplos también, porque el código queda más corto. La separación que explico después vale igual con un <code>Rigidbody</code>.</p>
 
-      <h2>El problema de la gravedad</h2>
-      <p>Lo primero que sale es que cada estado mueva al personaje a su manera. Andar aplica la gravedad, saltar también, y así con todos. El día que un estado nuevo no la aplica, el personaje se queda flotando en el aire.</p>
-      <p>En un juego de exploración la gravedad tiene que afectar al personaje siempre, esté en el estado que esté. Así que no puede depender de que cada estado se acuerde de ella.</p>
+      <h2>Cómo lo hice la primera vez</h2>
+      <p>En un juego de exploración la gravedad tiene que afectar al personaje siempre, esté en el estado que esté. En el prototipo lo resolví metiéndola en la clase base de los estados.</p>
+      <p>Cada estado tenía su <code>UpdatePhysics</code> y al final llamaba a <code>base.UpdatePhysics()</code>. Ese método de la clase base comprobaba si el personaje tocaba el suelo, llevaba el coyote time, cambiaba al estado de salto o de caída, aplicaba la gravedad, movía al personaje y actualizaba el animator. Algo así:</p>
+      <pre><code>public class State
+{
+    public virtual void UpdatePhysics()
+    {
+        // Suelo, coyote time, paso a salto o a caída, gravedad,
+        // Move y animaciones. Todo aquí, para todos los estados.
+        _player.velocity.y += _player.gravity * Time.deltaTime;
+        _player.controller.Move(_player.velocity * Time.deltaTime);
+    }
+}
+
+public class AttackState : State
+{
+    public override void UpdatePhysics()
+    {
+        _player.velocity.x = _player.velocity.z = 0f;
+        base.UpdatePhysics();   // sin esta línea, el personaje flota
+    }
+}</code></pre>
+      <p>Funcionaba, pero tenía sus problemas:</p>
+      <ul>
+        <li><strong>La gravedad dependía de una línea.</strong> Cada estado nuevo tenía que acordarse de llamar a <code>base.UpdatePhysics()</code>, y en el orden correcto.</li>
+        <li><strong>La clase base decidía transiciones.</strong> El paso a salto o a caída estaba en la base, mezclado con las físicas, así que cualquier estado podía acabar saltando aunque no tuviera sentido.</li>
+        <li><strong>Todos tocaban la velocidad.</strong> Los estados escribían directamente en la velocidad del personaje, y para saber quién la había cambiado había que revisarlos uno a uno.</li>
+      </ul>
 
       <h2>Dos capas</h2>
-      <p>La solución fue separar el personaje en dos partes que no se mezclan.</p>
+      <p>Para la versión de ahora separé el personaje en dos partes que no se mezclan.</p>
       <ul>
         <li><strong>El motor</strong> es la capa de físicas. Guarda la velocidad, aplica la gravedad, sabe si estás en el suelo y mueve al personaje una vez por frame.</li>
         <li><strong>Los estados</strong> deciden lo que quiere hacer el personaje. Piden una velocidad horizontal o un salto, pero nunca tocan la gravedad ni llaman a <code>Move</code>.</li>
