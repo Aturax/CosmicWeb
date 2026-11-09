@@ -298,7 +298,7 @@ footer a:hover{color:var(--white)}
       <h2>Dos formas de empezar</h2>
       <p>Para la parte física hay dos caminos. Uno es usar un <code>Rigidbody</code> con un collider y programar a mano el comportamiento. Tienes fuerzas, empujones y todo el motor de físicas a tu favor, pero también tienes que pelearte con la fricción, las rampas y los rebotes que no quieres.</p>
       <p>El otro es partir del componente <code>CharacterController</code>. No reacciona a fuerzas, pero resuelve bien las rampas y los escalones, y el movimiento hace exactamente lo que le pides. A cambio, la gravedad y cualquier empuje los calculas tú.</p>
-      <p>En el prototipo del que salió Project Sargon usé el componente, y en los ejemplos también, porque el código queda más corto. La separación que explico después vale igual con un <code>Rigidbody</code>.</p>
+      <p>En Project Sargon uso el componente, tanto en el prototipo como ahora. La separación que explico después vale igual con un <code>Rigidbody</code>.</p>
 
       <h2>Cómo lo hice la primera vez</h2>
       <p>En un juego de exploración la gravedad tiene que afectar al personaje siempre, esté en el estado que esté. En el prototipo lo resolví metiéndola en la clase base de los estados.</p>
@@ -330,144 +330,126 @@ public class AttackState : State
       </ul>
 
       <h2>Dos capas</h2>
-      <p>Para la versión de ahora separé el personaje en dos partes que no se mezclan.</p>
+      <p>Para la versión de ahora separé el personaje en dos partes.</p>
       <ul>
-        <li><strong>El motor</strong> es la capa de físicas. Guarda la velocidad, aplica la gravedad, sabe si estás en el suelo y mueve al personaje una vez por frame.</li>
-        <li><strong>Los estados</strong> deciden lo que quiere hacer el personaje. Piden una velocidad horizontal o un salto, pero nunca tocan la gravedad ni llaman a <code>Move</code>.</li>
+        <li><strong>Las fuerzas</strong> van en un componente propio, <code>ForceReceiver</code>. En su <code>Update</code> aplica la gravedad, el impulso del salto y los empujones, sin saber en qué estado está el personaje.</li>
+        <li><strong>Los estados</strong> deciden cuánto quiere moverse el personaje por su cuenta. Ninguno calcula la gravedad.</li>
       </ul>
-      <p>El motor queda así:</p>
       <pre><code>[RequireComponent(typeof(CharacterController))]
-public class CharacterMotor : MonoBehaviour
+public class ForceReceiver : MonoBehaviour
 {
-    [SerializeField] private float _gravity = -25f;
-    [SerializeField] private float _groundedPush = -2f;
+    private const float GroundedVerticalVelocity = -0.5f;
+
+    [SerializeField] private float _drag = 0.3f;
 
     private CharacterController _controller;
-    private Vector3 _horizontal;
-    private float _vertical;
+    private float _verticalVelocity;
+    private Vector3 _impact;
+    private Vector3 _dampingVelocity;
 
-    public bool IsGrounded =&gt; _controller.isGrounded;
-    public Vector3 Velocity =&gt; _horizontal + Vector3.up * _vertical;
+    public Vector3 Movement =&gt; _impact + Vector3.up * _verticalVelocity;
+    public bool IsFalling =&gt; _verticalVelocity &lt; GroundedVerticalVelocity;
 
     private void Awake()
     {
         _controller = GetComponent&lt;CharacterController&gt;();
     }
 
-    // Lo que piden los estados
-    public void SetHorizontal(Vector3 velocity) =&gt; _horizontal = velocity;
-    public void Jump(float speed) =&gt; _vertical = speed;
-
-    // Se llama una vez por frame, después del estado
-    public void Tick(float deltaTime)
+    private void Update()
     {
-        if (IsGrounded &amp;&amp; _vertical &lt; 0f)
-            _vertical = _groundedPush;
+        if (_controller.isGrounded &amp;&amp; _verticalVelocity &lt; 0f)
+            _verticalVelocity = GroundedVerticalVelocity;
         else
-            _vertical += _gravity * deltaTime;
+            _verticalVelocity += Physics.gravity.y * Time.deltaTime;
 
-        _controller.Move(Velocity * deltaTime);
+        // Los empujones se van apagando solos
+        _impact = Vector3.SmoothDamp(_impact, Vector3.zero, ref _dampingVelocity, _drag);
     }
+
+    public void Jump(float speed) =&gt; _verticalVelocity = speed;
+    public void AddForce(Vector3 force) =&gt; _impact += force;
 }</code></pre>
-      <p>La velocidad vertical es solo del motor. Los estados pueden darle un impulso con <code>Jump</code>, pero lo que pasa después lo decide la gravedad.</p>
+      <p>La velocidad vertical es solo suya. Un estado puede pedirle un salto o meterle un empujón, pero lo que pasa después lo decide este componente. Como no depende del jugador, el mismo componente me sirve para cualquier personaje que tenga que caer o recibir golpes.</p>
 
       <h2>La máquina de estados</h2>
       <p>La máquina de estados es pequeña. Cada estado tiene su <code>Enter</code>, su <code>Tick</code> y su <code>Exit</code>.</p>
       <pre><code>public abstract class State
 {
-    public virtual void Enter() { }
+    public abstract void Enter();
     public abstract void Tick(float deltaTime);
-    public virtual void Exit() { }
+    public abstract void Exit();
 }
 
-public class StateMachine
+public abstract class StateMachine : MonoBehaviour
 {
-    public State Current { get; private set; }
+    public State CurrentState { get; private set; }
 
     public void ChangeState(State next)
     {
-        Current?.Exit();
-        Current = next;
-        Current.Enter();
+        CurrentState?.Exit();
+        CurrentState = next;
+        CurrentState?.Enter();
     }
 
-    public void Tick(float deltaTime) =&gt; Current?.Tick(deltaTime);
+    private void Update() =&gt; CurrentState?.Tick(Time.deltaTime);
 }</code></pre>
-      <p>Y dos estados de ejemplo, uno para moverse por el suelo y otro para el aire:</p>
-      <pre><code>public class MoveState : State
-{
-    private readonly Player _player;
 
-    public MoveState(Player player) =&gt; _player = player;
+      <h2>Un solo sitio para moverse</h2>
+      <p>La clase base de los estados del jugador tiene un método <code>Move</code>. Suma lo que quiere el estado y lo que traen las fuerzas, y llama al <code>CharacterController</code>. Si el personaje ha empezado a caer, también lo pasa al estado de caída, para que ningún estado tenga que vigilarlo.</p>
+      <pre><code>public abstract class PlayerBaseState : State
+{
+    protected readonly PlayerStateMachine _stateMachine;
+
+    protected PlayerBaseState(PlayerStateMachine stateMachine)
+    {
+        _stateMachine = stateMachine;
+    }
+
+    // La única forma que tiene un estado de mover al personaje
+    protected void Move(Vector3 motion, float deltaTime)
+    {
+        if (_stateMachine.Forces.IsFalling &amp;&amp; _stateMachine.CurrentState != _stateMachine.FallingState)
+            _stateMachine.ChangeState(_stateMachine.FallingState);
+
+        Vector3 velocity = motion + _stateMachine.Forces.Movement;
+        _stateMachine.Controller.Move(velocity * deltaTime);
+    }
+}</code></pre>
+      <p>Y así lo usan dos estados:</p>
+      <pre><code>public class PlayerFreeLookState : PlayerBaseState
+{
+    // ...
 
     public override void Tick(float deltaTime)
     {
-        _player.Motor.SetHorizontal(_player.Input.Move * _player.RunSpeed);
-
-        if (!_player.Motor.IsGrounded)
-            _player.StateMachine.ChangeState(_player.AirState);
-        else if (_player.Input.JumpPressed)
-        {
-            _player.Motor.Jump(_player.JumpSpeed);
-            _player.StateMachine.ChangeState(_player.AirState);
-        }
+        Vector3 movement = GetCameraRelativeMovement();
+        Move(movement * _stateMachine.RunSpeed, deltaTime);
     }
 }
 
-public class AirState : State
+public class PlayerAttackingState : PlayerBaseState
 {
-    private readonly Player _player;
-
-    public AirState(Player player) =&gt; _player = player;
+    // ...
 
     public override void Tick(float deltaTime)
     {
-        // En el aire se controla menos, pero de la gravedad no se ocupa
-        _player.Motor.SetHorizontal(_player.Input.Move * _player.AirSpeed);
+        // No se desplaza, pero sigue cayendo y recibiendo empujones
+        Move(Vector3.zero, deltaTime);
 
-        if (_player.Motor.IsGrounded)
-            _player.StateMachine.ChangeState(_player.MoveState);
+        // ...avanzar el ataque y decidir a qué estado volver
     }
 }</code></pre>
-      <p>Ninguno de los dos sabe nada de la gravedad. El estado del aire no hace caer al personaje, solo espera a que el motor diga que ha tocado el suelo.</p>
-
-      <h2>El orden importa</h2>
-      <p>El componente del personaje junta todo y decide el orden. Primero el estado, luego las físicas.</p>
-      <pre><code>public class Player : MonoBehaviour
-{
-    // ...campos de velocidad, input y referencias
-
-    public CharacterMotor Motor { get; private set; }
-    public StateMachine StateMachine { get; } = new();
-    public MoveState MoveState { get; private set; }
-    public AirState AirState { get; private set; }
-
-    private void Awake()
-    {
-        Motor = GetComponent&lt;CharacterMotor&gt;();
-        MoveState = new MoveState(this);
-        AirState = new AirState(this);
-    }
-
-    private void Start() =&gt; StateMachine.ChangeState(MoveState);
-
-    private void Update()
-    {
-        StateMachine.Tick(Time.deltaTime);   // primero decide el estado
-        Motor.Tick(Time.deltaTime);          // luego se aplican las físicas
-    }
-}</code></pre>
-      <p>Un estado de ataque, de esquiva o de lo que venga después se escribe igual. Pide la velocidad que quiera, o ninguna, y el motor sigue aplicando la gravedad por debajo.</p>
+      <p>La diferencia con el prototipo es que la clase base ya no hace las físicas. Las fuerzas se calculan siempre en su componente, llame quien llame a <code>Move</code>. Si un estado nuevo se olvidara de moverse, el personaje se quedaría quieto y se vería enseguida. Con el prototipo, el fallo era que flotaba solo en ese estado.</p>
 
       <h2>Detalles a tener en cuenta</h2>
       <ul>
-        <li><strong>Un empujoncito hacia abajo en el suelo.</strong> Si la velocidad vertical se queda en cero al tocar el suelo, <code>isGrounded</code> parpadea entre un frame y otro. Por eso el motor deja un valor negativo pequeño mientras estás apoyado.</li>
+        <li><strong>Un empujoncito hacia abajo en el suelo.</strong> Si la velocidad vertical se queda en cero al tocar el suelo, <code>isGrounded</code> parpadea entre un frame y otro. Por eso el componente de fuerzas deja un valor negativo pequeño mientras estás apoyado.</li>
         <li><strong>Crear los estados una vez.</strong> Se crean en <code>Awake</code> y se reutilizan. Si haces <code>new</code> en cada cambio de estado, generas basura y es más fácil dejarte suscripciones colgando.</li>
-        <li><strong>Las transiciones las decide cada estado.</strong> Así cada uno sabe de dónde se puede salir y a dónde, y no hay un <code>switch</code> gigante que lo controle todo.</li>
+        <li><strong>Las transiciones las decide cada estado.</strong> La única excepción es la caída, que va en <code>Move</code> porque puede pasar en cualquier momento.</li>
       </ul>
 
       <h2>Lo que viene</h2>
-      <p>El combate de <a href="/juegos/project-sargon/">Project Sargon</a> va encima de esta base. Lo que añada después no tiene que tocar las físicas, y la gravedad sigue funcionando sin que tenga que acordarme de ella.</p>
+      <p>El combate de <a href="/juegos/project-sargon/">Project Sargon</a> va encima de esta base. Cada estado nuevo pide su movimiento con <code>Move</code>, y la gravedad sigue funcionando sin que tenga que acordarme de ella.</p>
       <p class="note">Si tienes dudas o lo haces de otra forma, cuéntamelo en los comentarios del <a href="https://youtu.be/9AsUx7tvk5s" target="_blank" rel="noopener">vídeo</a> o en <a href="mailto:contact@cosmicworks.es">contact@cosmicworks.es</a>. También tienes el artículo sobre el <a href="/aprende/service-locator-unity/">service locator</a>, que es la base sobre la que va todo esto.</p>
     </article>
   </section>
