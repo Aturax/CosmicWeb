@@ -19,6 +19,7 @@ const PAGES = [
   ['index.html', 'en/index.html'],
   ['juegos/tiki-tiki/index.html', 'en/games/tiki-tiki/index.html'],
   ['juegos/project-sargon/index.html', 'en/games/project-sargon/index.html'],
+  ['juegos/zampa-cubes/index.html', 'en/games/zampa-cubes/index.html'],
 ];
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
