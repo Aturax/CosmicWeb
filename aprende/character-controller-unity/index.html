@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Character controller en Unity: máquina de estados y gravedad | Cosmic Works</title>
+<meta name="description" content="Cómo organizo el character controller de Project Sargon en Unity, con una máquina de estados y una capa de físicas que aplica la gravedad siempre. Con código en C#.">
+<meta name="author" content="Alberto Blanco">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#a51e1e">
+<link rel="icon" type="image/png" href="/assets/cosmic-mark-red.png">
+<link rel="apple-touch-icon" href="/assets/cosmic-mark-red.png">
+<link rel="canonical" href="https://cosmicworks.es/aprende/character-controller-unity/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cosmic Works">
+<meta property="og:locale" content="es_ES">
+<meta property="og:title" content="Character controller en Unity: separar las físicas de los estados">
+<meta property="og:description" content="Cómo organizo el character controller de Project Sargon en Unity, con una máquina de estados y una capa de físicas que aplica la gravedad siempre. Con código en C#.">
+<meta property="og:url" content="https://cosmicworks.es/aprende/character-controller-unity/">
+<meta property="og:image" content="https://i.ytimg.com/vi/9AsUx7tvk5s/maxresdefault.jpg">
+<meta property="article:published_time" content="2026-11-09">
+<meta property="article:author" content="Alberto Blanco">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@CosmicWork">
+<meta name="twitter:title" content="Character controller en Unity: separar las físicas de los estados">
+<meta name="twitter:description" content="Cómo organizo el character controller de Project Sargon en Unity, con una máquina de estados y una capa de físicas que aplica la gravedad siempre. Con código en C#.">
+<meta name="twitter:image" content="https://i.ytimg.com/vi/9AsUx7tvk5s/maxresdefault.jpg">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "TechArticle",
+   "@id": "https://cosmicworks.es/aprende/character-controller-unity/#article",
+   "headline": "Character controller en Unity: separar las físicas de los estados",
+   "description": "Cómo organizo el character controller de Project Sargon en Unity, con una máquina de estados y una capa de físicas que aplica la gravedad siempre. Con código en C#.",
+   "inLanguage": "es",
+   "datePublished": "2026-11-09",
+   "dateModified": "2026-11-09",
+   "author": {
+    "@type": "Person",
+    "@id": "https://cosmicworks.es/#alberto",
+    "name": "Alberto Blanco",
+    "url": "https://cosmicworks.es/#alberto"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "@id": "https://cosmicworks.es/#org",
+    "name": "Cosmic Works",
+    "logo": {
+     "@type": "ImageObject",
+     "url": "https://cosmicworks.es/assets/cosmic-mark-red.png"
+    }
+   },
+   "image": "https://i.ytimg.com/vi/9AsUx7tvk5s/maxresdefault.jpg",
+   "mainEntityOfPage": "https://cosmicworks.es/aprende/character-controller-unity/",
+   "keywords": "character controller, Unity, C#, máquina de estados, gravedad, físicas, desarrollo de videojuegos",
+   "proficiencyLevel": "Intermediate",
+   "video": {
+    "@id": "https://cosmicworks.es/aprende/character-controller-unity/#video"
+   }
+  },
+  {
+   "@type": "VideoObject",
+   "@id": "https://cosmicworks.es/aprende/character-controller-unity/#video",
+   "name": "Así nace PROJECT SARGON: El juego que llevo 20 años soñando",
+   "description": "Anuncio de Project Sargon, un juego de acción y exploración en tercera persona, y de dónde viene la idea.",
+   "uploadDate": "2026-02-12",
+   "duration": "PT5M32S",
+   "inLanguage": "es",
+   "thumbnailUrl": [
+    "https://i.ytimg.com/vi/9AsUx7tvk5s/maxresdefault.jpg",
+    "https://i.ytimg.com/vi/9AsUx7tvk5s/hqdefault.jpg"
+   ],
+   "embedUrl": "https://www.youtube.com/embed/9AsUx7tvk5s",
+   "contentUrl": "https://www.youtube.com/watch?v=9AsUx7tvk5s",
+   "author": {
+    "@id": "https://cosmicworks.es/#alberto"
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Cosmic Works",
+     "item": "https://cosmicworks.es/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Aprende",
+     "item": "https://cosmicworks.es/aprende/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "Character controller en Unity",
+     "item": "https://cosmicworks.es/aprende/character-controller-unity/"
+    }
+   ]
+  }
+ ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Mismo estilo que /index.html (copiado de allí: si cambias algo común, cámbialo en los dos sitios) */
+:root{
+  color-scheme: light;
+  --red:#a51e1e; --red-deep:#7d1414; --red-soft:#cb4a4d; --white:#ffffff; --bone:#f7f1ec; --ink:#2a1414; --ink-muted:#6e5555;
+  --display:"IM Fell English", Georgia, "Times New Roman", serif;
+  --body:"Work Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+  --w:1100px; --tooth:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--white);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--red-soft);outline-offset:3px;border-radius:4px}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.05;text-wrap:balance;margin:0}
+p{margin:0}
+.wrap{max-width:var(--w);margin:0 auto;padding-left:max(20px, env(safe-area-inset-left,0px));padding-right:max(20px, env(safe-area-inset-right,0px))}
+.label{font-family:var(--mono);font-weight:700;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase}
+
+.band-red{background:var(--red);color:var(--white);position:relative}
+.band-red::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.18;background-image:radial-gradient(#00000055 1px,transparent 1.2px);background-size:5px 5px}
+.band-red > *{position:relative;z-index:1}
+.band-white{background:var(--white);color:var(--ink)}
+.teeth-bottom{-webkit-mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 90deg,#0000 91deg) 50% / calc(var(--tooth)*2) 100%;mask:conic-gradient(from -45deg at bottom,#0000,#000 1deg 90deg,#0000 91deg) 50% / calc(var(--tooth)*2) 100%;padding-bottom:var(--tooth);position:relative;z-index:2}
+.teeth-top{-webkit-mask:conic-gradient(from 135deg at top,#0000,#000 1deg 90deg,#0000 91deg) 50% / calc(var(--tooth)*2) 100%;mask:conic-gradient(from 135deg at top,#0000,#000 1deg 90deg,#0000 91deg) 50% / calc(var(--tooth)*2) 100%;padding-top:var(--tooth);margin-top:calc(var(--tooth) * -1)}
+.teeth-top.teeth-bottom{
+  -webkit-mask:conic-gradient(from 135deg at top,#0000,#000 1deg 90deg,#0000 91deg) top / calc(var(--tooth)*2) 51% repeat-x,conic-gradient(from -45deg at bottom,#0000,#000 1deg 90deg,#0000 91deg) bottom / calc(var(--tooth)*2) 51% repeat-x;
+  mask:conic-gradient(from 135deg at top,#0000,#000 1deg 90deg,#0000 91deg) top / calc(var(--tooth)*2) 51% repeat-x,conic-gradient(from -45deg at bottom,#0000,#000 1deg 90deg,#0000 91deg) bottom / calc(var(--tooth)*2) 51% repeat-x}
+
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--white)}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--white);border-bottom:3px solid var(--red)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand img{height:46px;width:auto;display:block}
+.brand .mark-only{display:none}
+nav{display:flex;gap:22px;flex-wrap:wrap;align-items:center;font-weight:600;font-size:.92rem}
+nav a{text-decoration:none;color:var(--red);background:linear-gradient(var(--red),var(--red)) 0 100%/0 2px no-repeat;transition:background-size .2s}
+nav a:hover{background-size:100% 2px;color:var(--red-deep)}
+nav a.lang{display:inline-block;line-height:1.3;font-family:var(--mono);font-weight:700;font-size:.75rem;letter-spacing:.08em;border:2px solid var(--red);background:var(--white);color:var(--red);border-radius:999px;padding:4px 10px;background-image:none;transition:background .15s,color .15s}
+nav a.lang:hover{background:var(--red);color:var(--white)}
+@media (max-width:640px){nav{gap:14px;font-size:.84rem}.brand .lockup{display:none}.brand .mark-only{display:block;height:30px}}
+
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:700;font-size:.95rem;border:2px solid currentColor;transition:transform .15s, box-shadow .15s}
+.btn:hover{transform:translate(-2px,-2px)}
+.btn.solid-white{background:var(--white);color:var(--red);border-color:var(--white);box-shadow:4px 4px 0 var(--red-deep)}
+.btn.solid-white:hover{box-shadow:6px 6px 0 var(--red-deep)}
+.btn.solid-red{background:var(--red);color:var(--white);border-color:var(--red);box-shadow:4px 4px 0 var(--ink)}
+.btn.solid-red:hover{box-shadow:6px 6px 0 var(--ink)}
+.btn.ghost{color:var(--white)}
+.btn.outline-red{color:var(--red);border-color:var(--red);background:var(--white)}
+
+section{padding-block:80px}
+section.teeth-top{padding-top:calc(56px + var(--tooth))}
+section.teeth-bottom{padding-bottom:calc(56px + var(--tooth))}
+.sec-head{margin-bottom:32px}
+.sec-head h2{font-size:clamp(2.2rem,5vw,3.5rem);margin-top:10px}
+.band-white .sec-head .label{color:var(--red)}
+.band-red .sec-head .label{color:#ffd9d6}
+.intro{max-width:62ch;font-size:1.08rem;color:var(--ink-muted);margin-bottom:28px}
+.band-red .intro{color:#ffe9e7}
+
+/* Página del juego */
+.crumbs{font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;color:#ffd9d6;margin-bottom:18px}
+.crumbs a{text-decoration:none}
+.crumbs a:hover{text-decoration:underline}
+.game-hero .wrap{display:grid;grid-template-columns:1fr 1.1fr;gap:44px;align-items:center;padding-block:56px 76px}
+.game-hero .label{color:#ffd9d6}
+.game-hero h1{font-size:clamp(2.4rem,5.6vw,4.2rem);margin-top:14px;text-shadow:4px 4px 0 var(--red-deep)}
+.game-hero .lead{margin-top:20px;max-width:48ch;font-size:1.12rem;color:#ffe9e7}
+.game-hero .btns{margin-top:28px}
+.shot{position:relative;margin:0}
+.shot img{display:block;width:100%;height:auto;border-radius:12px;border:3px solid var(--ink);box-shadow:10px 10px 0 var(--red-deep);transform:rotate(1.5deg)}
+.stamp{position:absolute;left:-12px;top:-22px;width:92px;aspect-ratio:1;border-radius:50%;background:var(--white);color:var(--red);display:grid;place-items:center;text-align:center;font-family:var(--mono);font-weight:700;font-size:.62rem;letter-spacing:.08em;line-height:1.3;transform:rotate(-12deg);box-shadow:3px 3px 0 var(--ink);text-transform:uppercase}
+@media (max-width:840px){.game-hero .wrap{grid-template-columns:1fr;padding-block:36px 64px}.stamp{left:6px}}
+
+.modes{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.mode{border:3px solid var(--ink);border-radius:16px;padding:22px 24px;background:var(--white);display:flex;flex-direction:column;gap:8px;box-shadow:6px 6px 0 var(--red)}
+.mode h3{font-size:1.6rem;color:var(--red)}
+.mode p{color:var(--ink-muted)}
+.mode .new{align-self:flex-start;font-family:var(--mono);font-weight:700;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;background:var(--red);color:var(--white);padding:3px 8px;border-radius:4px}
+@media (max-width:760px){.modes{grid-template-columns:1fr}}
+
+.split{display:grid;grid-template-columns:1fr 1.1fr;gap:44px;align-items:center}
+.split .txt{display:flex;flex-direction:column;gap:16px;max-width:60ch}
+.band-red .split .txt p{color:#ffe9e7}
+.band-white .split .txt p{color:var(--ink-muted)}
+.split figure{margin:0}
+.split img{display:block;width:100%;height:auto;border-radius:12px;border:3px solid var(--ink)}
+.band-red .split img{box-shadow:8px 8px 0 var(--red-deep)}
+.band-white .split img{box-shadow:8px 8px 0 var(--red)}
+.sign{font-family:var(--display);font-size:1.3rem}
+@media (max-width:840px){.split{grid-template-columns:1fr}.split figure{order:-1}}
+
+.sheets{display:grid;grid-template-columns:repeat(2,1fr);gap:28px}
+.sheet h3{font-size:1.7rem;color:var(--red);margin-bottom:12px}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;font-size:.95rem;margin:0;padding:18px 20px;background:var(--bone);border-radius:12px}
+.facts dt{font-family:var(--mono);font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--red);padding-top:4px}
+.facts dd{margin:0}
+@media (max-width:760px){.sheets{grid-template-columns:1fr}}
+
+.cta .wrap{display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+.cta h2{font-size:clamp(2rem,4.5vw,3rem)}
+.cta p{color:#ffe9e7;max-width:56ch}
+
+footer{background:var(--red-deep);color:#ffd9d6}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding-block:24px;font-family:var(--mono);font-size:.76rem}
+footer img{width:22px;height:auto;vertical-align:middle;margin-right:8px}
+footer a{text-decoration:none}
+footer a:hover{color:var(--white)}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+
+/* Vídeo (se carga al pulsar, para no traer YouTube con la página) */
+.video{position:relative;aspect-ratio:16/9;border:3px solid var(--ink);border-radius:12px;overflow:hidden;background:#000;box-shadow:10px 10px 0 var(--red-deep)}
+.video button{all:unset;cursor:pointer;position:absolute;inset:0;display:grid;place-items:center}
+.video img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.video .play{position:relative;width:76px;height:54px;border-radius:14px;background:var(--red);display:grid;place-items:center;box-shadow:3px 3px 0 var(--ink)}
+.video .play::before{content:"";border-left:20px solid var(--white);border-block:12px solid transparent;margin-left:5px}
+.video button:hover .play{background:var(--red-deep)}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.pillars{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+@media (max-width:760px){.pillars{grid-template-columns:1fr}}
+.log{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;max-width:780px}
+.log li{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:baseline;padding:14px 0;border-bottom:2px solid var(--bone)}
+.log .n{font-family:var(--mono);font-weight:700;font-size:.74rem;letter-spacing:.08em;color:var(--red)}
+.log a{font-weight:600;color:var(--ink)}
+.log p{color:var(--ink-muted);font-size:.95rem;margin-top:4px}
+
+/* Artículo */
+.article-hero .wrap{padding-block:52px 72px;max-width:860px}
+.article-hero h1{font-size:clamp(2.2rem,5.2vw,3.8rem);margin-top:14px;text-shadow:4px 4px 0 var(--red-deep)}
+.article-hero .lead{margin-top:20px;font-size:1.12rem;color:#ffe9e7;max-width:60ch}
+.article-hero .meta{margin-top:18px;font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;color:#ffd9d6}
+.prose{max-width:760px;margin:0 auto;padding-inline:max(20px, env(safe-area-inset-left,0px))}
+.prose > *+*{margin-top:18px}
+.prose h2{font-size:clamp(1.8rem,3.6vw,2.5rem);color:var(--red);margin-top:52px}
+.prose h3{font-size:1.5rem;margin-top:34px}
+.prose p,.prose li{color:#3d2626}
+.prose ul{padding-left:22px}
+.prose li+li{margin-top:8px}
+.prose a{color:var(--red);font-weight:600}
+.prose code{font-family:var(--mono);font-size:.88em;background:var(--bone);padding:1px 6px;border-radius:4px}
+.prose pre{background:var(--ink);color:#f7e9e6;border-radius:12px;padding:18px 20px;overflow-x:auto;font-size:.85rem;line-height:1.55;box-shadow:6px 6px 0 var(--red)}
+.prose pre code{background:none;padding:0;font-size:1em;color:inherit}
+.prose .video{margin-top:28px}
+.note{background:var(--bone);border-left:4px solid var(--red);border-radius:8px;padding:14px 18px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><img class="lockup" src="/assets/cosmic-lockup-red.png" alt="Cosmic Works" width="584" height="296"><img class="mark-only" src="/assets/cosmic-mark-red.png" alt="Cosmic Works" width="220" height="272"></a>
+    <nav aria-label="Secciones">
+      <a href="/#juegos">Juegos</a>
+      <a href="/#alberto">Sobre mí</a>
+      <a href="/aprende/">Aprende</a>
+      <a href="/#contacto">Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="article-hero band-red teeth-bottom">
+    <div class="wrap">
+      <p class="crumbs"><a href="/">Cosmic Works</a> / <a href="/aprende/">Aprende</a> / Character controller</p>
+      <p class="label">Unity · C# · Personajes</p>
+      <h1>Character controller en Unity: separar las físicas de los estados</h1>
+      <p class="lead">En el anuncio de Project Sargon conté que el character controller me costó semanas. Lo que más me costó fue organizar una máquina de estados que funcionara bien sin que cada estado tuviera que ocuparse de la gravedad. Aquí explico cómo lo separé.</p>
+      <p class="meta">Alberto Blanco · <time datetime="2026-11-09">9 de noviembre de 2026</time></p>
+    </div>
+  </div>
+
+  <section class="band-white" style="padding-top:56px">
+    <article class="prose">
+      <p>Lo cuento por encima en el vídeo del anuncio. Aquí va más a fondo, con código.</p>
+      <div class="video">
+        <button type="button" data-yt="9AsUx7tvk5s" aria-label="Ver el vídeo: Así nace Project Sargon">
+          <img src="https://i.ytimg.com/vi/9AsUx7tvk5s/hqdefault.jpg" alt="" width="480" height="360" loading="lazy">
+          <span class="play" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <h2>El nombre confunde</h2>
+      <p>Unity tiene un componente que se llama <code>CharacterController</code>, y es fácil pensar que con añadirlo ya tienes el personaje hecho. El componente es solo una base de físicas y de movimiento. Se encarga de las colisiones, las rampas y los escalones, y poco más. Ni siquiera aplica la gravedad si usas <code>Move</code>.</p>
+      <p>Un character controller de verdad es mucho más que eso. Es todo lo que decide cómo se mueve y reacciona tu personaje, con sus estados, el input, las animaciones y, en un juego como Project Sargon, el combate.</p>
+
+      <h2>Dos formas de empezar</h2>
+      <p>Para la parte física hay dos caminos. Uno es usar un <code>Rigidbody</code> con un collider y programar a mano el comportamiento. Tienes fuerzas, empujones y todo el motor de físicas a tu favor, pero también tienes que pelearte con la fricción, las rampas y los rebotes que no quieres.</p>
+      <p>El otro es partir del componente <code>CharacterController</code>. No reacciona a fuerzas, pero resuelve bien las rampas y los escalones, y el movimiento hace exactamente lo que le pides. A cambio, la gravedad y cualquier empuje los calculas tú.</p>
+      <p>En los ejemplos uso el componente porque el código queda más corto. La separación que explico después vale igual con un <code>Rigidbody</code>.</p>
+
+      <h2>El problema de la gravedad</h2>
+      <p>Lo primero que sale es que cada estado mueva al personaje a su manera. Andar aplica la gravedad, saltar también, y así con todos. El día que un estado nuevo no la aplica, el personaje se queda flotando en el aire.</p>
+      <p>En un juego de exploración la gravedad tiene que afectar al personaje siempre, esté en el estado que esté. Así que no puede depender de que cada estado se acuerde de ella.</p>
+
+      <h2>Dos capas</h2>
+      <p>La solución fue separar el personaje en dos partes que no se mezclan.</p>
+      <ul>
+        <li><strong>El motor</strong> es la capa de físicas. Guarda la velocidad, aplica la gravedad, sabe si estás en el suelo y mueve al personaje una vez por frame.</li>
+        <li><strong>Los estados</strong> deciden lo que quiere hacer el personaje. Piden una velocidad horizontal o un salto, pero nunca tocan la gravedad ni llaman a <code>Move</code>.</li>
+      </ul>
+      <p>El motor queda así:</p>
+      <pre><code>[RequireComponent(typeof(CharacterController))]
+public class CharacterMotor : MonoBehaviour
+{
+    [SerializeField] private float _gravity = -25f;
+    [SerializeField] private float _groundedPush = -2f;
+
+    private CharacterController _controller;
+    private Vector3 _horizontal;
+    private float _vertical;
+
+    public bool IsGrounded =&gt; _controller.isGrounded;
+    public Vector3 Velocity =&gt; _horizontal + Vector3.up * _vertical;
+
+    private void Awake()
+    {
+        _controller = GetComponent&lt;CharacterController&gt;();
+    }
+
+    // Lo que piden los estados
+    public void SetHorizontal(Vector3 velocity) =&gt; _horizontal = velocity;
+    public void Jump(float speed) =&gt; _vertical = speed;
+
+    // Se llama una vez por frame, después del estado
+    public void Tick(float deltaTime)
+    {
+        if (IsGrounded &amp;&amp; _vertical &lt; 0f)
+            _vertical = _groundedPush;
+        else
+            _vertical += _gravity * deltaTime;
+
+        _controller.Move(Velocity * deltaTime);
+    }
+}</code></pre>
+      <p>La velocidad vertical es solo del motor. Los estados pueden darle un impulso con <code>Jump</code>, pero lo que pasa después lo decide la gravedad.</p>
+
+      <h2>La máquina de estados</h2>
+      <p>La máquina de estados es pequeña. Cada estado tiene su <code>Enter</code>, su <code>Tick</code> y su <code>Exit</code>.</p>
+      <pre><code>public abstract class State
+{
+    public virtual void Enter() { }
+    public abstract void Tick(float deltaTime);
+    public virtual void Exit() { }
+}
+
+public class StateMachine
+{
+    public State Current { get; private set; }
+
+    public void ChangeState(State next)
+    {
+        Current?.Exit();
+        Current = next;
+        Current.Enter();
+    }
+
+    public void Tick(float deltaTime) =&gt; Current?.Tick(deltaTime);
+}</code></pre>
+      <p>Y dos estados de ejemplo, uno para moverse por el suelo y otro para el aire:</p>
+      <pre><code>public class MoveState : State
+{
+    private readonly Player _player;
+
+    public MoveState(Player player) =&gt; _player = player;
+
+    public override void Tick(float deltaTime)
+    {
+        _player.Motor.SetHorizontal(_player.Input.Move * _player.RunSpeed);
+
+        if (!_player.Motor.IsGrounded)
+            _player.StateMachine.ChangeState(_player.AirState);
+        else if (_player.Input.JumpPressed)
+        {
+            _player.Motor.Jump(_player.JumpSpeed);
+            _player.StateMachine.ChangeState(_player.AirState);
+        }
+    }
+}
+
+public class AirState : State
+{
+    private readonly Player _player;
+
+    public AirState(Player player) =&gt; _player = player;
+
+    public override void Tick(float deltaTime)
+    {
+        // En el aire se controla menos, pero de la gravedad no se ocupa
+        _player.Motor.SetHorizontal(_player.Input.Move * _player.AirSpeed);
+
+        if (_player.Motor.IsGrounded)
+            _player.StateMachine.ChangeState(_player.MoveState);
+    }
+}</code></pre>
+      <p>Ninguno de los dos sabe nada de la gravedad. El estado del aire no hace caer al personaje, solo espera a que el motor diga que ha tocado el suelo.</p>
+
+      <h2>El orden importa</h2>
+      <p>El componente del personaje junta todo y decide el orden. Primero el estado, luego las físicas.</p>
+      <pre><code>public class Player : MonoBehaviour
+{
+    // ...campos de velocidad, input y referencias
+
+    public CharacterMotor Motor { get; private set; }
+    public StateMachine StateMachine { get; } = new();
+    public MoveState MoveState { get; private set; }
+    public AirState AirState { get; private set; }
+
+    private void Awake()
+    {
+        Motor = GetComponent&lt;CharacterMotor&gt;();
+        MoveState = new MoveState(this);
+        AirState = new AirState(this);
+    }
+
+    private void Start() =&gt; StateMachine.ChangeState(MoveState);
+
+    private void Update()
+    {
+        StateMachine.Tick(Time.deltaTime);   // primero decide el estado
+        Motor.Tick(Time.deltaTime);          // luego se aplican las físicas
+    }
+}</code></pre>
+      <p>Un estado de ataque, de esquiva o de lo que venga después se escribe igual. Pide la velocidad que quiera, o ninguna, y el motor sigue aplicando la gravedad por debajo.</p>
+
+      <h2>Detalles a tener en cuenta</h2>
+      <ul>
+        <li><strong>Un empujoncito hacia abajo en el suelo.</strong> Si la velocidad vertical se queda en cero al tocar el suelo, <code>isGrounded</code> parpadea entre un frame y otro. Por eso el motor deja un valor negativo pequeño mientras estás apoyado.</li>
+        <li><strong>Crear los estados una vez.</strong> Se crean en <code>Awake</code> y se reutilizan. Si haces <code>new</code> en cada cambio de estado, generas basura y es más fácil dejarte suscripciones colgando.</li>
+        <li><strong>Las transiciones las decide cada estado.</strong> Así cada uno sabe de dónde se puede salir y a dónde, y no hay un <code>switch</code> gigante que lo controle todo.</li>
+      </ul>
+
+      <h2>Lo que viene</h2>
+      <p>El combate de <a href="/juegos/project-sargon/">Project Sargon</a> va encima de esta base. Lo que añada después no tiene que tocar las físicas, y la gravedad sigue funcionando sin que tenga que acordarme de ella.</p>
+      <p class="note">Si tienes dudas o lo haces de otra forma, cuéntamelo en los comentarios del <a href="https://youtu.be/9AsUx7tvk5s" target="_blank" rel="noopener">vídeo</a> o en <a href="mailto:contact@cosmicworks.es">contact@cosmicworks.es</a>. También tienes el artículo sobre el <a href="/aprende/service-locator-unity/">service locator</a>, que es la base sobre la que va todo esto.</p>
+    </article>
+  </section>
+
+  <section class="cta band-red teeth-top">
+    <div class="wrap">
+      <h2>Más en el canal</h2>
+      <p>En YouTube explico cómo hago mis juegos con Unity. Los vídeos están en español.</p>
+      <div class="btns">
+        <a class="btn solid-white" href="https://www.youtube.com/@cosmicworks?sub_confirmation=1" target="_blank" rel="noopener">Suscribirme en YouTube ↗</a>
+        <a class="btn ghost" href="/aprende/">Más artículos</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><img src="/assets/cosmic-mark.png" alt="" width="220" height="272" loading="lazy"><span>© 2026 Cosmic Works · Ciudad Real, España</span></span>
+    <a href="/">cosmicworks.es</a>
+  </div>
+</footer>
+<script>
+(function(){
+  document.querySelectorAll('.video button[data-yt]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var f=document.createElement('iframe');
+      f.src='https://www.youtube-nocookie.com/embed/'+btn.getAttribute('data-yt')+'?autoplay=1&rel=0';
+      f.title=btn.getAttribute('aria-label');
+      f.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      f.allowFullscreen=true;
+      btn.replaceWith(f);
+    });
+  });
+})();
+</script>
+</body>
+</html>
