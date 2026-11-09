@@ -43,6 +43,10 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://cosmicworks.es/juegos/project-sargon/"/>
   </url>
   <url>
+    <loc>https://cosmicworks.es/aprende/</loc>
+    <lastmod>2026-11-09</lastmod>
+  </url>
+  <url>
     <loc>https://cosmicworks.es/aprende/service-locator-unity/</loc>
     <lastmod>2026-11-09</lastmod>
   </url>
