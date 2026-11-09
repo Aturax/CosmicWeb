@@ -203,7 +203,7 @@ footer a:hover{color:var(--white)}
 .log p{color:var(--ink-muted);font-size:.95rem;margin-top:4px}
 
 /* Artículo */
-.article-hero .wrap{padding-block:52px 72px;max-width:860px}
+.article-hero .wrap{padding-block:52px 72px}
 .article-hero h1{font-size:clamp(2.2rem,5.2vw,3.8rem);margin-top:14px;text-shadow:4px 4px 0 var(--red-deep)}
 .article-hero .lead{margin-top:20px;font-size:1.12rem;color:#ffe9e7;max-width:60ch}
 .article-hero .meta{margin-top:18px;font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;color:#ffd9d6}
@@ -221,8 +221,36 @@ footer a:hover{color:var(--white)}
 .prose .video{margin-top:28px}
 .note{background:var(--bone);border-left:4px solid var(--red);border-radius:8px;padding:14px 18px}
 
+/* Canal y preguntas (copiado de la portada) */
+.learn{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:36px}
+.learn-card{border:3px solid var(--ink);border-radius:16px;padding:22px 24px;background:var(--white);display:flex;flex-direction:column;gap:8px;box-shadow:6px 6px 0 var(--red)}
+.learn-card h3{font-size:1.5rem;color:var(--red)}
+.learn-card p{color:var(--ink-muted);font-size:.98rem}
+.learn-card .kind{font-family:var(--mono);font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted)}
+@media (max-width:860px){.learn{grid-template-columns:1fr}}
+.faq{margin-top:48px;max-width:780px}
+.faq h3{font-size:clamp(1.6rem,3vw,2.1rem);color:var(--red);margin-bottom:14px}
+.faq details{border-bottom:2px solid var(--bone);padding:14px 0}
+.faq summary{cursor:pointer;font-weight:600;font-size:1.05rem;list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--mono);font-weight:700;color:var(--red)}
+.faq details[open] summary::after{content:"–"}
+.faq details p{margin-top:10px;color:var(--ink-muted);max-width:68ch}
+.faq details p a{color:var(--red);font-weight:600}
+.yt{display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;border:3px solid var(--ink);border-radius:16px;padding:28px 30px;background:var(--bone);box-shadow:8px 8px 0 var(--red)}
+.yt .play{width:72px;height:72px;border-radius:18px;background:var(--red);display:grid;place-items:center}
+.yt .play::before{content:"";border-left:22px solid var(--white);border-block:13px solid transparent;margin-left:6px}
+.yt h3{font-size:clamp(1.5rem,3.2vw,2.1rem)}
+.yt p{color:var(--ink-muted);margin-top:8px;max-width:56ch}
+.yt .label{color:var(--red)}
+@media (max-width:760px){.yt{grid-template-columns:1fr;padding:24px}}
+.learn-intro{max-width:68ch;font-size:1.08rem;color:var(--ink-muted);margin-bottom:28px}
+.hub{max-width:var(--w);margin:0 auto;padding-inline:max(20px, env(safe-area-inset-left,0px))}
+.hub h2.sec{font-size:clamp(2rem,4.5vw,3rem);margin-bottom:24px}
+.hub .faq{margin-top:0}
+
 /* Sumario */
-.list{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:22px;padding-inline:max(20px, env(safe-area-inset-left,0px))}
+.list{max-width:var(--w);margin:0 auto;display:flex;flex-direction:column;gap:22px;padding-inline:max(20px, env(safe-area-inset-left,0px))}
 .card{display:grid;grid-template-columns:300px 1fr;border:3px solid var(--ink);border-radius:16px;overflow:hidden;text-decoration:none;color:var(--ink);background:var(--white);box-shadow:6px 6px 0 var(--ink);transition:transform .2s, box-shadow .2s}
 .card:hover{transform:translate(-3px,-3px);box-shadow:9px 9px 0 var(--red)}
 .card img{display:block;width:100%;height:100%;object-fit:cover;aspect-ratio:16/9;border-right:3px solid var(--ink)}
@@ -232,7 +260,7 @@ footer a:hover{color:var(--white)}
 .card-txt p{color:var(--ink-muted);font-size:.96rem}
 .card-txt .more{font-weight:700;font-size:.92rem;color:var(--red);margin-top:auto}
 @media (max-width:720px){.card{grid-template-columns:1fr}.card img{border-right:0;border-bottom:3px solid var(--ink);height:auto}}
-.soon{max-width:900px;margin:36px auto 0;padding-inline:max(20px, env(safe-area-inset-left,0px));color:var(--ink-muted)}
+.soon{max-width:var(--w);margin:36px auto 0;padding-inline:max(20px, env(safe-area-inset-left,0px));color:var(--ink-muted)}
 .soon a{color:var(--red);font-weight:600}
 </style>
 </head>
@@ -255,11 +283,49 @@ footer a:hover{color:var(--white)}
       <p class="crumbs"><a href="/">Cosmic Works</a> / Aprende</p>
       <p class="label">Aprende</p>
       <h1>Aprende a hacer videojuegos</h1>
-      <p class="lead">Aquí van por escrito, y con código, cosas que cuento en mis vídeos de YouTube. Casi todo con Unity y C#, a partir de los juegos que estoy haciendo.</p>
+      <p class="lead">En mi canal de YouTube enseño a hacer videojuegos con Unity y C#, a partir de los juegos que estoy haciendo. Aquí tienes qué hay en el canal y los artículos donde cuento algunos vídeos por escrito y con código.</p>
     </div>
   </div>
 
   <section class="band-white" style="padding-top:56px">
+    <div class="hub">
+      <p class="label" style="color:var(--red)">El canal</p>
+      <h2 class="sec" style="margin-top:10px">Qué hay en YouTube</h2>
+      <p class="learn-intro">Subo tutoriales de Unity y de programación, y voy contando cómo hago mis juegos. Ahora mismo, sobre todo Project Sargon. Los vídeos están en español.</p>
+      <div class="learn">
+        <div class="learn-card">
+          <span class="kind">Unity · C#</span>
+          <h3>Tutoriales de Unity</h3>
+          <p>Mecánicas de mis juegos programadas en Unity 6 con C#.</p>
+        </div>
+        <div class="learn-card">
+          <span class="kind">Devlog</span>
+          <h3>Cómo hago mis juegos</h3>
+          <p>Enseño cada juego mientras lo hago, también lo que no me ha salido bien.</p>
+        </div>
+        <div class="learn-card">
+          <span class="kind">Diseño</span>
+          <h3>Diseño de juegos</h3>
+          <p>Juegos que me gustan y qué me llevo de ellos para los míos.</p>
+        </div>
+      </div>
+      <div class="yt">
+        <div class="play" aria-hidden="true"></div>
+        <div>
+          <p class="label">Devlog</p>
+          <h3 style="margin-top:8px">Mi canal de YouTube</h3>
+          <p>Vídeos sobre cómo se hacen los juegos: noticias, tutoriales y las decisiones de diseño que hay detrás. Casi siempre con Unity, aunque no solo.</p>
+        </div>
+        <a class="btn solid-red" href="https://www.youtube.com/@cosmicworks" target="_blank" rel="noopener">Ver el canal ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-white" style="padding-top:24px" id="articulos">
+    <div class="hub">
+      <p class="label" style="color:var(--red)">Por escrito</p>
+      <h2 class="sec" style="margin-top:10px">Artículos</h2>
+    </div>
     <div class="list">
       <a class="card" href="/aprende/service-locator-unity/">
         <img src="https://i.ytimg.com/vi/AS8B0SSKWb0/hqdefault.jpg" alt="" width="480" height="360" loading="lazy">
@@ -271,7 +337,35 @@ footer a:hover{color:var(--white)}
         </span>
       </a>
     </div>
-    <p class="soon">Iré subiendo más poco a poco. Mientras tanto, tienes todos los vídeos en <a href="https://www.youtube.com/@cosmicworks" target="_blank" rel="noopener">mi canal de YouTube</a>, y algunas preguntas frecuentes en la <a href="/#aprende">portada</a>.</p>
+    <p class="soon">Iré subiendo más poco a poco, a partir de los vídeos del canal.</p>
+  </section>
+
+  <section class="band-white" style="padding-top:24px">
+    <div class="hub">
+      <div class="faq">
+        <h3>Preguntas frecuentes</h3>
+        <details>
+          <summary>¿Dónde puedo aprender a hacer videojuegos en español?</summary>
+          <p>En mi canal de YouTube, <a href="https://www.youtube.com/@cosmicworks" target="_blank" rel="noopener">@cosmicworks</a>. Los vídeos están en español y casi siempre uso Unity, que se puede usar gratis.</p>
+        </details>
+        <details>
+          <summary>¿Qué necesito para empezar a desarrollar videojuegos?</summary>
+          <p>Un ordenador y un motor como Unity o Godot, que son gratis. Yo empezaría con un juego muy corto o apuntándome a una game jam, no con el juego grande que tienes en la cabeza.</p>
+        </details>
+        <details>
+          <summary>¿Qué es un desarrollador indie?</summary>
+          <p>Alguien que hace juegos sin una editora detrás. Cosmic Works es mi estudio. Diseño y programo los juegos en Ciudad Real, y para el arte y la música trabajo con otra gente.</p>
+        </details>
+        <details>
+          <summary>¿Qué motor y herramientas uso?</summary>
+          <p>Unity 6 con C# y .NET, y Steamworks para publicar en Steam. Mis juegos salen para PC (Windows, macOS y Linux) y Steam Deck.</p>
+        </details>
+        <details>
+          <summary>¿Hay comunidad de desarrolladores indies en español?</summary>
+          <p>Sí. De 2020 a 2023 organizamos el <a href="https://itch.io/jam/5-reto-gamedev" target="_blank" rel="noopener">Reto GameDev</a>, una game jam por equipos para gente que hace juegos en español.</p>
+        </details>
+      </div>
+        </div>
   </section>
 
   <section class="cta band-red teeth-top">
