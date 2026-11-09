@@ -213,6 +213,23 @@ section.teeth-bottom{padding-bottom:calc(56px + var(--tooth))}
 .stack span{font-family:var(--mono);font-weight:500;font-size:.78rem;background:var(--white);color:var(--red);border-radius:999px;padding:4px 12px}
 @media (max-width:640px){.about{grid-template-columns:1fr;gap:28px}.avatar{width:170px}}
 
+/* Trayectoria */
+.career{margin-top:56px;display:flex;flex-direction:column;gap:24px}
+.career > h3{font-size:clamp(1.8rem,3.6vw,2.5rem);color:var(--white)}
+.job{background:var(--white);color:var(--ink);border-radius:16px;padding:26px 28px;box-shadow:8px 8px 0 var(--red-deep);display:flex;flex-direction:column;gap:14px}
+.job-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px 20px;flex-wrap:wrap}
+.job h4{font-family:var(--display);font-weight:400;font-size:1.8rem;line-height:1.1;margin:0;color:var(--red)}
+.job-role{font-weight:600;font-size:.95rem;margin-top:4px}
+.job-years{font-family:var(--mono);font-weight:700;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;background:var(--red);color:var(--white);padding:5px 10px;border-radius:999px;white-space:nowrap}
+.job-txt{color:var(--ink-muted);max-width:68ch}
+.job-games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:4px}
+.job-game{display:flex;flex-direction:column;border:3px solid var(--ink);border-radius:12px;overflow:hidden;text-decoration:none;color:var(--ink);background:var(--bone);transition:transform .2s, box-shadow .2s}
+.job-game:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--red)}
+.job-game img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-bottom:3px solid var(--ink)}
+.jg-txt{display:flex;flex-direction:column;gap:4px;padding:14px 16px 16px;font-size:.92rem;color:var(--ink-muted)}
+.jg-txt strong{font-family:var(--display);font-weight:400;font-size:1.35rem;color:var(--ink)}
+@media (max-width:760px){.job{padding:22px 20px}.job-games{grid-template-columns:1fr}}
+
 /* YouTube */
 .yt{display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;border:3px solid var(--ink);border-radius:16px;padding:28px 30px;background:var(--bone);box-shadow:8px 8px 0 var(--red)}
 .play{width:72px;height:72px;border-radius:18px;background:var(--red);display:grid;place-items:center}
@@ -370,9 +387,16 @@ nav a.lang:hover{background:var(--red);color:var(--white)}
    "name": "Alberto Blanco",
    "jobTitle": "Indie game developer",
    "image": "https://cosmicworks.es/assets/alberto.webp",
-   "worksFor": {
-    "@id": "https://cosmicworks.es/#org"
-   },
+   "worksFor": [
+    {
+     "@id": "https://cosmicworks.es/#org"
+    },
+    {
+     "@type": "Organization",
+     "name": "DevilishGames",
+     "url": "https://www.devilishgames.com/"
+    }
+   ],
    "homeLocation": {
     "@type": "Place",
     "name": "Ciudad Real, España",
@@ -393,7 +417,8 @@ nav a.lang:hover{background:var(--red);color:var(--white)}
     "C#",
     ".NET",
     "Steamworks"
-   ]
+   ],
+   "description": "Game programmer at DevilishGames and lead developer on Cutout Village. Previously worked on One Military Camp at Abylight Studios. Makes his own games as Cosmic Works."
   },
   {
    "@type": "WebSite",
@@ -687,11 +712,51 @@ nav a.lang:hover{background:var(--red);color:var(--white)}
       <div class="about">
         <img class="avatar" src="/assets/alberto.webp" alt="Illustration of Alberto Blanco, arms crossed, wearing a Cosmic Works logo t-shirt" data-i18n-alt="a2" width="400" height="400">
         <div class="txt">
-          <p data-i18n="t29">I'm a programmer and I've been making games for years. I started with mobile games and game jams, and now I make games for PC and Steam Deck.</p>
+          <p data-i18n="t29">I'm a programmer and I've been making games for years. I started with mobile games and game jams, and since 2021 I've been doing it professionally. The Cosmic Works games I make on my own, for PC and Steam Deck.</p>
           <p data-i18n="t30">I care about design as much as code, especially figuring out why one mechanic works and another doesn't. The studio's motto is "gaming passion": I play a lot, and that's where most of my ideas come from.</p>
           <p data-i18n="t31">On YouTube I teach how to make video games with Unity, using my own games (it's further down, under <a href="#aprende">Learn</a>). The videos are in Spanish.</p>
           <div class="stack" aria-label="Tools" data-i18n-aria-label="tools"><span>Unity 6</span><span>C#</span><span>.NET</span><span>Steamworks</span><span data-i18n="t32">Game design</span></div>
         </div>
+      </div>
+
+      <div class="career">
+        <h3 data-i18n="c0">Where I've worked</h3>
+        <article class="job">
+          <header class="job-head">
+            <div>
+              <h4>DevilishGames</h4>
+              <p class="job-role" data-i18n="c1">Game programmer · lead developer on Cutout Village</p>
+            </div>
+            <span class="job-years" data-i18n="c2">2022 – now</span>
+          </header>
+          <p class="job-txt" data-i18n="c3">I joined at the end of 2022 and I'm still here. I've worked on projects for other studios and on the studio's own games. On Bambas! I was part of the programming team, and on Cutout Village I'm the lead developer.</p>
+          <div class="job-games">
+            <a class="job-game" href="https://store.steampowered.com/app/3907910/Cutout_Village/" target="_blank" rel="noopener">
+              <img src="/assets/experiencia/cutout-village.webp" alt="Cutout Village screenshot: a village of paper houses on a hillside" data-i18n-alt="ac1" width="960" height="540" loading="lazy">
+              <span class="jg-txt"><strong>Cutout Village</strong><span data-i18n="c4">A papercraft city builder. You cut, fold and glue every building to put the village together. In Early Access on Steam since October 2026.</span></span>
+            </a>
+            <a class="job-game" href="https://store.steampowered.com/app/3274390/Bambas/" target="_blank" rel="noopener">
+              <img src="/assets/experiencia/bambas.webp" alt="Bambas! screenshot: the sneaker collection with the colour editor" data-i18n-alt="ac2" width="960" height="540" loading="lazy">
+              <span class="jg-txt"><strong>Bambas!</strong><span data-i18n="c5">An urban walking simulator where every zebra crossing, kerb and puddle is an adventure. Released in 2025 on PC and consoles.</span></span>
+            </a>
+          </div>
+        </article>
+        <article class="job">
+          <header class="job-head">
+            <div>
+              <h4>Abylight Studios</h4>
+              <p class="job-role" data-i18n="c6">Programmer on One Military Camp</p>
+            </div>
+            <span class="job-years">2021 – 2022</span>
+          </header>
+          <p class="job-txt" data-i18n="c7">My first job in the industry. I spent a year on the One Military Camp team, mostly making internal tools and part of the UI, plus the odd mechanic. It's where I first saw how a studio works from the inside.</p>
+          <div class="job-games">
+            <a class="job-game" href="https://store.steampowered.com/app/1743830/One_Military_Camp/" target="_blank" rel="noopener">
+              <img src="/assets/experiencia/one-military-camp.webp" alt="One Military Camp screenshot: a military camp seen from above" data-i18n-alt="ac3" width="960" height="540" loading="lazy">
+              <span class="jg-txt"><strong>One Military Camp</strong><span data-i18n="c8">A management game where you build a military camp and train soldiers to send them on missions. Released on Steam in 2023.</span></span>
+            </a>
+          </div>
+        </article>
       </div>
     </div>
   </section>
