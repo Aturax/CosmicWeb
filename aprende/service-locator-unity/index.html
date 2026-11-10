@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Service locator en Unity: cómo organizar los sistemas de tu juego | Cosmic Works</title>
+<title>Service locator en Unity, con ejemplo en C# | Cosmic Works</title>
 <meta name="description" content="Cómo he montado un service locator en Unity para conectar los sistemas de Project Sargon. Con código en C# y el vídeo del devlog.">
 <meta name="author" content="Alberto Blanco">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -292,7 +292,7 @@ footer a:hover{color:var(--white)}
 
       <h2>El problema</h2>
       <p>En un juego hay sistemas que usa casi todo lo demás, como el input, el audio o el guardado de partidas. Una puerta tiene que sonar al abrirse y el menú de opciones tiene que guardar lo que cambias.</p>
-      <p>Si cada script busca esos sistemas por su cuenta, con <code>FindObjectOfType</code> o con un singleton distinto en cada clase, el proyecto se llena de referencias cruzadas. Al principio funciona. Luego cada mecánica nueva cuesta un poco más que la anterior, y un cambio en el audio rompe algo en el menú de pausa.</p>
+      <p>Si cada script busca esos sistemas por su cuenta, con <code>FindFirstObjectByType</code> o con un singleton distinto en cada clase, el proyecto se llena de referencias cruzadas. Al principio funciona. Luego cada mecánica nueva cuesta un poco más que la anterior, y un cambio en el audio rompe algo en el menú de pausa.</p>
 
       <h2>Qué es un service locator</h2>
       <p>Es un registro central. Cada sistema se registra una vez al arrancar el juego, y cualquier script lo pide por su tipo. El script que lo pide no necesita saber quién lo creó ni en qué objeto está.</p>
@@ -383,7 +383,7 @@ public class Bootstrapper : MonoBehaviour
         // ...
     }
 }</code></pre>
-      <p>La puerta no tiene una referencia al <code>AudioService</code> en el inspector ni lo busca en la escena. Si cambio cómo funciona el audio por dentro, la puerta no hay que tocarla.</p>
+      <p>La puerta no tiene una referencia al <code>AudioService</code> en el inspector ni lo busca en la escena. Si cambio cómo funciona el audio por dentro, no hay que tocar la puerta.</p>
 
       <h2>Detalles que me han ahorrado problemas</h2>
       <ul>
